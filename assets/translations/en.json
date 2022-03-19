@@ -16,5 +16,8 @@
   "todo_app": "Todo app",
   "dont_have_account": "Don't have account yeat? ",
   "register_now": "Register now",
-  "log_out": "Log out"
+  "log_out": "Log out",
+  "home": "Home",
+  "todos": "Todos",
+  "profile": "Profile"
 }
