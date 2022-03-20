@@ -1,6 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
+const mockedUser = User(
+  email: '',
+  name: '',
+  image: '',
+  todoIds: [],
+);
+
 class User extends Equatable {
   const User({
     required this.email,
@@ -50,13 +57,4 @@ class User extends Equatable {
         name = map['name'] as String,
         image = map['image'] as String,
         todoIds = map['todosIds'] as List<String>;
-
-  factory User.fromDocument(DocumentSnapshot doc) {
-    return User(
-      email: doc.get('email'),
-      name: doc.get('name'),
-      image: doc.get('image'),
-      todoIds: doc.get('todoIds'),
-    );
-  }
 }

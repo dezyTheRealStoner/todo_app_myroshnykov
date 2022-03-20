@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Todo extends Equatable {
   const Todo({
-    required this.id,
     required this.title,
     required this.description,
     required this.todoType,
@@ -10,7 +10,6 @@ class Todo extends Equatable {
     required this.completed,
   });
 
-  final String id;
   final String title;
   final String description;
   final String todoType;
@@ -18,7 +17,6 @@ class Todo extends Equatable {
   final bool completed;
 
   Todo copyWith(
-    String? id,
     String? title,
     String? description,
     String? todoType,
@@ -26,7 +24,6 @@ class Todo extends Equatable {
     bool? completed,
   ) {
     return Todo(
-      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       todoType: todoType ?? this.todoType,
@@ -37,7 +34,6 @@ class Todo extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
         title,
         description,
         todoType,

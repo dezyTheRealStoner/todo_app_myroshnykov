@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/add_todo_params.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/todo/add_todo_interactor.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src//logger/custom_logger.dart';
 
 part 'add_todo_state.dart';
 

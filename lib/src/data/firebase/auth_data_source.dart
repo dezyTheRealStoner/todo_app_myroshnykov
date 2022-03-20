@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:todo_app_myroshnykov/src/data/firebase/profile_data_source.dart';
-import 'package:todo_app_myroshnykov/src/domain/entities/user/user.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src//logger/custom_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
 const _defaultImage =
@@ -22,11 +22,12 @@ class AuthDataSource {
     return userId != null || userId == '';
   }
 
-  Future<User> getUserInfo() async {
+  Future<DocumentSnapshot> getUserInfo() async {
     final userEmail = _firebase.currentUser!.email;
-    final user = await ProfileDataSource(id: userEmail!).getUserProfileData();
+    final userSnapshot =
+        await ProfileDataSource(id: userEmail!).getUserProfileData();
 
-    return user;
+    return userSnapshot;
   }
 
   Future<void> registerWithEmailAndPassword({

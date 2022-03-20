@@ -4,13 +4,14 @@ import 'package:todo_app_myroshnykov/src/domain/interactors/base/base_interactor
 import 'package:todo_app_myroshnykov/src/domain/repositories/todo_repository.dart';
 
 @LazySingleton()
-class GetAllUserTodosInteractor extends BaseInteractor<String, List<Todo>> {
+class GetAllUserTodosInteractor
+    extends BaseInteractor<List<dynamic>, List<Todo>> {
   GetAllUserTodosInteractor(this._repository);
 
   final TodoRepository _repository;
 
   @override
-  Future<List<Todo>> call(String userId) {
-    return _repository.getAllUserTodos(userId);
+  Future<List<Todo>> call(List<dynamic> todoIds) {
+    return _repository.getAllUserTodos(todoIds);
   }
 }

@@ -5,7 +5,7 @@ import 'package:todo_app_myroshnykov/src/domain/entities/auht/register_params.da
 import 'package:todo_app_myroshnykov/src/domain/exceptions/email_is_already_user_exception.dart';
 import 'package:todo_app_myroshnykov/src/domain/exceptions/incorrect_email_or_password_exception.dart';
 import 'package:todo_app_myroshnykov/src/domain/repositories/auth_repository.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {

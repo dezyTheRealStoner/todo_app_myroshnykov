@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:todo_app_myroshnykov/src/domain/entities/user/user.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 @LazySingleton()
 class ProfileDataSource {
@@ -14,12 +13,10 @@ class ProfileDataSource {
   final CollectionReference _profilesCollection =
       FirebaseFirestore.instance.collection('profiles');
 
-  Future<User> getUserProfileData() async {
-    final profile = await _profilesCollection.doc(id).get();
+  Future<DocumentSnapshot> getUserProfileData() async {
+    final profileSnapshot = await _profilesCollection.doc(id).get();
 
-    final user = User.fromDocument(profile);
-
-    return user;
+    return profileSnapshot;
   }
 
   Future<void> updateProfileData({

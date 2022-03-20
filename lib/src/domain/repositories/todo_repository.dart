@@ -13,5 +13,5 @@ abstract class TodoRepository {
 
   Future<Todo> getTodo(String id);
 
-  Future<List<Todo>> getAllUserTodos(String userId);
+  Future<List<Todo>> getAllUserTodos(List<dynamic> todoIds);
 }
