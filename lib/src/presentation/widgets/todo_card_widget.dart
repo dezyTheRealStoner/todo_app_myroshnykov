@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
 
 class TodoCardWidget extends StatelessWidget {
   const TodoCardWidget({
@@ -59,13 +60,15 @@ class TodoCardWidget extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      _buildIconButton(
+                      IconButtonWidget(
                         icon: Icons.check,
                         color: Colors.green,
+                        onTap: () {},
                       ),
-                      _buildIconButton(
+                      IconButtonWidget(
                         icon: Icons.toc,
                         color: Theme.of(context).colorScheme.primary,
+                        onTap: () {},
                       ),
                     ],
                   ),
@@ -73,30 +76,6 @@ class TodoCardWidget extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIconButton({
-    required IconData icon,
-    required Color color,
-  }) {
-    return RawMaterialButton(
-      onPressed: () {},
-      splashColor: color,
-      elevation: 2.0,
-      child: Icon(
-        icon,
-        color: color,
-        size: 25,
-      ),
-      padding: const EdgeInsets.all(10.0),
-      shape: CircleBorder(
-        side: BorderSide(
-          width: 1.0,
-          style: BorderStyle.solid,
-          color: color,
         ),
       ),
     );

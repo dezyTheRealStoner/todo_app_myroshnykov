@@ -42,7 +42,7 @@ class TodoAppMyroshnykov extends StatelessWidget {
         locale: context.locale,
         supportedLocales: context.supportedLocales,
         title: 'Todo App Myroshnykov',
-        theme: Themes.purpleBlackOrange,
+        theme: Themes.darkTheme,
       ),
     );
   }

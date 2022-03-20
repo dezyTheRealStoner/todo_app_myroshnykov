@@ -38,5 +38,9 @@
   "september": "September",
   "october": "October",
   "november": "November",
-  "december": "December"
+  "december": "December",
+  "completed_todos": "Completed todos",
+  "theme": "Theme",
+  "language": "Language",
+  "sure_about_log_out": "Are you sure that you want \n to log out?"
 }

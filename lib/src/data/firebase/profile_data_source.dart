@@ -24,12 +24,14 @@ class ProfileDataSource {
     required String name,
     required String image,
     required List<dynamic> todoIds,
+    required int completedTodos,
   }) async {
     return await _profilesCollection.doc(id).set({
       'email': email,
       'name': name,
       'image': image,
       'todoIds': todoIds,
+      'completedTodos': completedTodos,
     });
   }
 }
