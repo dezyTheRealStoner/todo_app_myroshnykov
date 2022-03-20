@@ -49,6 +49,7 @@ class TodoRepositoryImpl implements TodoRepository {
         name: user.name,
         image: user.image,
         todoIds: updatedTodoIds,
+        completedTodos: user.completedTodos,
       );
     } on Exception catch (error) {
       logger.e('$error, hashCode: ${error.hashCode}');

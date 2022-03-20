@@ -78,14 +78,14 @@ class Themes {
     textTheme: _textTheme,
   );
 
-  static final purpleBlackOrange = ThemeData(
+  static final darkTheme = ThemeData(
     colorScheme: ColorScheme(
       primary: Colors.white,
       onPrimary: Colors.black,
-      secondary: const Color.fromRGBO(255, 105, 0, 1),
+      secondary: Colors.grey,
       onSecondary: const Color.fromRGBO(196, 196, 196, 1),
-      surface: const Color.fromRGBO(134, 115, 225, 1),
-      onSurface: const Color.fromRGBO(156, 255, 93, 1),
+      surface: Colors.grey,
+      onSurface: Colors.white,
       background: const Color.fromRGBO(69, 39, 107, 1),
       onBackground: const Color.fromRGBO(103, 32, 96, 1),
       brightness: Brightness.dark,

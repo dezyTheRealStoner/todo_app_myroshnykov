@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 const mockedUser = User(
@@ -6,6 +5,7 @@ const mockedUser = User(
   name: '',
   image: '',
   todoIds: [],
+  completedTodos: 0,
 );
 
 class User extends Equatable {
@@ -14,12 +14,14 @@ class User extends Equatable {
     required this.name,
     required this.image,
     required this.todoIds,
+    required this.completedTodos,
   });
 
   final String email;
   final String name;
   final String image;
   final List<dynamic> todoIds;
+  final int completedTodos;
 
   @override
   List<Object?> get props => [
@@ -27,6 +29,7 @@ class User extends Equatable {
         name,
         image,
         todoIds,
+        completedTodos,
       ];
 
   User copyWith({
@@ -34,12 +37,14 @@ class User extends Equatable {
     String? name,
     String? image,
     List<String>? todoIds,
+    int? completedTodos,
   }) {
     return User(
       email: email ?? this.email,
       name: name ?? this.name,
       image: image ?? this.image,
       todoIds: todoIds ?? this.todoIds,
+      completedTodos: completedTodos ?? this.completedTodos,
     );
   }
 
@@ -49,6 +54,7 @@ class User extends Equatable {
       'name': name,
       'image': image,
       'todoIds': todoIds,
+      'completedTodos': completedTodos,
     };
   }
 
@@ -56,5 +62,6 @@ class User extends Equatable {
       : email = map['email'] as String,
         name = map['name'] as String,
         image = map['image'] as String,
-        todoIds = map['todosIds'] as List<String>;
+        todoIds = map['todosIds'] as List<String>,
+        completedTodos = map['completedTodos'] as int;
 }

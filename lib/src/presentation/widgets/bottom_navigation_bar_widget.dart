@@ -39,7 +39,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: currentTabIndex,
       type: BottomNavigationBarType.fixed,
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.onPrimary,
       selectedItemColor: theme.colorScheme.primary,
       unselectedFontSize: 14,
       unselectedItemColor: theme.colorScheme.secondary,

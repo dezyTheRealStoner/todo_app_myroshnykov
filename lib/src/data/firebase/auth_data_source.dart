@@ -45,6 +45,7 @@ class AuthDataSource {
       name: name,
       image: _defaultImage,
       todoIds: [],
+      completedTodos: 0,
     );
   }
 
