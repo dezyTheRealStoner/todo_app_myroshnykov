@@ -1,11 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/add_todo/add_todo_screen.dart';
-import 'package:todo_app_myroshnykov/src/presentation/features/app_preferences/app_preferences_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/todo_card_widget.dart';
@@ -64,14 +62,18 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(width: 1),
           ),
-          child: ListView.builder(
-            itemCount: state.todoList.length,
-            itemBuilder: (context, index) => TodoCardWidget(
-              title: state.todoList.elementAt(index).title,
-              description: state.todoList.elementAt(index).description,
-              dateTime: state.todoList.elementAt(index).dateTime,
-            ),
-          ),
+          child: state.updating
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemCount: state.todoList.length,
+                  itemBuilder: (context, index) => TodoCardWidget(
+                    title: state.todoList.elementAt(index).title,
+                    description: state.todoList.elementAt(index).description,
+                    dateTime: state.todoList.elementAt(index).dateTime,
+                  ),
+                ),
         ),
       ),
     );

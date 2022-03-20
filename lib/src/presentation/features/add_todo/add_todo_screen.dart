@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/add_todo/add_todo_cubit.dart';
@@ -103,8 +104,15 @@ class _AddTodoScreenState
   }
 
   Widget _buildDateText(AddTodoState state) {
-    return Text(
-      '${LocaleKeys.date.tr()} ${state.dateTime.day} ${numToMonth(state.dateTime.month)} ${state.dateTime.year}',
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          '${LocaleKeys.date.tr()} ${state.dateTime.day} ${numToMonth(state.dateTime.month)} ${state.dateTime.year}',
+        ),
+        const SizedBox(height: 10),
+        Text(DateFormat.Hm().format(state.dateTime)),
+      ],
     );
   }
 
@@ -124,17 +132,18 @@ class _AddTodoScreenState
         ),
       ),
       child: IconButton(
-        onPressed: () => showDatePicker(
-          context: context,
-          initialDate: state.dateTime,
-          currentDate: DateTime.now(),
-          firstDate: DateTime(2020, 01, 01),
-          lastDate: DateTime(2026, 12, 31),
-        ).then((date) {
-          if (date != null) {
-            cubit(context).onDateSelect(date);
-          }
-        }),
+        onPressed: () {
+          DatePicker.showDateTimePicker(
+            context,
+            showTitleActions: true,
+            minTime: DateTime(2020, 1, 1),
+            maxTime: DateTime(2026, 12, 31),
+            onConfirm: (date) {
+              cubit(context).onDateSelect(date);
+            },
+            currentTime: DateTime.now(),
+          );
+        },
         icon: Icon(
           Icons.calendar_month,
           color: theme.colorScheme.onPrimary,

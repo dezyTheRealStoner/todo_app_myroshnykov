@@ -22,14 +22,26 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getAllUserTodos() async {
     try {
+      emit(state.copyWith(updating: true));
+
       final updatedUser = await _getUserInfoInteractor();
 
       final todoList =
           await _getAllUserTodosInteractor.call(updatedUser.todoIds);
 
-      emit(state.copyWith(todoList: todoList));
+      List<Todo> actualTodoList = [];
+
+      for (var todo in todoList) {
+        if (todo.dateTime.isAfter(DateTime.now())) {
+          actualTodoList.add(todo);
+        }
+      }
+
+      emit(state.copyWith(todoList: actualTodoList));
     } on Exception catch (error) {
       logger.e(error);
+    } finally {
+      emit(state.copyWith(updating: false));
     }
   }
 }
