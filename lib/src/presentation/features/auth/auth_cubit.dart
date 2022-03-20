@@ -8,7 +8,7 @@ import 'package:todo_app_myroshnykov/src/domain/exceptions/email_is_already_user
 import 'package:todo_app_myroshnykov/src/domain/exceptions/incorrect_email_or_password_exception.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/auth/log_in_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/auth/register_interactor.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/validators.dart';
 
 part 'auth_state.dart';

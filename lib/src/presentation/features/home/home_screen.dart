@@ -1,16 +1,24 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/add_todo/add_todo_screen.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/app_preferences/app_preferences_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/todo_card_widget.dart';
 
 class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   const HomeScreen({Key? key}) : super(key: key);
 
   static const screenName = '/home';
+
+  @override
+  void initParams(BuildContext context) {
+    cubit(context).getAllUserTodos();
+  }
 
   @override
   Widget buildWidget(BuildContext context) {
@@ -39,7 +47,7 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   }
 
   Widget _buildTitle() {
-    return Text(LocaleKeys.your_todos_for_today.tr());
+    return Text(LocaleKeys.your_coming_todos.tr());
   }
 
   Widget _buildProgress() {
@@ -47,16 +55,22 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   }
 
   Widget _buildList(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        decoration: BoxDecoration(
+    return observeState(
+      builder: (context, state) => Expanded(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 1)),
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(index.toString()),
+            border: Border.all(width: 1),
+          ),
+          child: ListView.builder(
+            itemCount: state.todoList.length,
+            itemBuilder: (context, index) => TodoCardWidget(
+              title: state.todoList.elementAt(index).title,
+              description: state.todoList.elementAt(index).description,
+              dateTime: state.todoList.elementAt(index).dateTime,
+            ),
           ),
         ),
       ),

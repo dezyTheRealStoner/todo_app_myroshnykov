@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
+import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/submit_button_widget.dart';
