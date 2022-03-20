@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserDataInputWidget extends StatefulWidget {
-  const UserDataInputWidget({
+class UnderlineInputWidget extends StatefulWidget {
+  const UnderlineInputWidget({
     Key? key,
     required this.hintText,
     required this.isPasswordField,
@@ -15,10 +15,10 @@ class UserDataInputWidget extends StatefulWidget {
   final String? errorText;
 
   @override
-  _UserDataInputWidgetState createState() => _UserDataInputWidgetState();
+  _UnderlineInputWidgetState createState() => _UnderlineInputWidgetState();
 }
 
-class _UserDataInputWidgetState extends State<UserDataInputWidget> {
+class _UnderlineInputWidgetState extends State<UnderlineInputWidget> {
   final FocusNode focusNode = FocusNode();
 
   String hintText = '';
@@ -36,7 +36,7 @@ class _UserDataInputWidgetState extends State<UserDataInputWidget> {
   }
 
   @override
-  void didUpdateWidget(covariant UserDataInputWidget oldWidget) {
+  void didUpdateWidget(covariant UnderlineInputWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     hintText == '' ? hintText = '' : hintText = widget.hintText;
     if (!obscureText) {
@@ -47,7 +47,7 @@ class _UserDataInputWidgetState extends State<UserDataInputWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 300,
+      width: MediaQuery.of(context).size.width * 0.7,
       child: Stack(
         children: [
           TextFormField(
