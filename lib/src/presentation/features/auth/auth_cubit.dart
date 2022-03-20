@@ -119,6 +119,7 @@ class AuthCubit extends Cubit<AuthState> {
         await _registerInteractor.call(params);
 
         emit(state.copyWith(allIsValid: true));
+        logger.i(state.allIsValid);
       } on EmailIsAlreadyUsedException catch (error) {
         emit(state.copyWith(emailAlreadyUsed: true));
         logger.e(error);

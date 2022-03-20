@@ -2,6 +2,8 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/host_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/add_todo/add_todo_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/add_todo/add_todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/app_preferences/app_preferences_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_screen.dart';
@@ -38,6 +40,9 @@ final routerDelegate = BeamerDelegate(
           ),
       ProfileScreen.screenName: (c, s, o) => const HostCubit<ProfileCubit>(
             child: ProfileScreen(),
+          ),
+      AddTodoScreen.screenName: (c, s, o) => const HostCubit<AddTodoCubit>(
+            child: AddTodoScreen(),
           ),
     },
   ),

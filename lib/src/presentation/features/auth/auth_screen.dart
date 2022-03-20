@@ -3,10 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
+import 'package:todo_app_myroshnykov/src/presentation/base/logger/custom_logger.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/submit_button_widget.dart';
-import 'package:todo_app_myroshnykov/src/presentation/widgets/user_data_input_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/underline_input_widget.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -29,6 +30,8 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   final ValueKey _passwordTextFieldKey = const ValueKey('passwordTextFieldKey');
   final ValueKey _confirmedPasswordTextFieldKey =
       const ValueKey('passwordRepeatedTextFieldKey');
+
+  final logger = getLogger('AuthScreen');
 
   @override
   void initParams(BuildContext context) {
@@ -63,7 +66,9 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   @override
   void onStateChanged(BuildContext context, AuthState state) {
     if (state.allIsValid) {
-      Beamer.of(context).beamToNamed(HomeScreen.screenName);
+      logger.i('HI!');
+      Beamer.of(context).beamToReplacementNamed(HomeScreen.screenName);
+      logger.i('HI!');
     }
   }
 
@@ -115,9 +120,9 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
           child: observeState(
             builder: (context, state) {
               if (state.loginStatus) {
-                return _buildLoginBody(context, state);
+                return _buildLoginBody(context);
               } else {
-                return _buildRegisterBody(context, state);
+                return _buildRegisterBody(context);
               }
             },
           ),
@@ -128,55 +133,57 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
 
   Widget _buildLoginBody(
     BuildContext context,
-    AuthState state,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 60),
-        _buildLogo(),
-        const SizedBox(height: 30),
-        _buildTextFields(state),
-        const SizedBox(height: 40),
-        SubmitButtonWidget(
-          title: LocaleKeys.log_in.tr(),
-          onPressed: () async {
-            await cubit(context).onLogIn();
-          },
-          disabled: !state.allFieldsFilled,
-          progress: state.progress,
-        ),
-        const SizedBox(height: 20),
-        _buildChangeScreenStateText(isLogIn: state.loginStatus),
-        const SizedBox(height: 20),
-      ],
+    return observeState(
+      builder: (context, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 60),
+          _buildLogo(),
+          const SizedBox(height: 30),
+          _buildTextFields(state),
+          const SizedBox(height: 40),
+          SubmitButtonWidget(
+            title: LocaleKeys.log_in.tr(),
+            onPressed: () async {
+              await cubit(context).onLogIn();
+            },
+            disabled: !state.allFieldsFilled,
+            progress: state.progress,
+          ),
+          const SizedBox(height: 20),
+          _buildChangeScreenStateText(isLogIn: state.loginStatus),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
   Widget _buildRegisterBody(
     BuildContext context,
-    AuthState state,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(height: 60),
-        _buildLogo(),
-        const SizedBox(height: 60),
-        _buildTextFields(state),
-        const SizedBox(height: 40),
-        SubmitButtonWidget(
-          title: LocaleKeys.register.tr(),
-          onPressed: () async {
-            await cubit(context).onRegister();
-          },
-          disabled: !state.allFieldsFilled,
-          progress: state.progress,
-        ),
-        const SizedBox(height: 20),
-        _buildChangeScreenStateText(isLogIn: state.loginStatus),
-        const SizedBox(height: 20),
-      ],
+    return observeState(
+      builder: (context, state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 60),
+          _buildLogo(),
+          const SizedBox(height: 60),
+          _buildTextFields(state),
+          const SizedBox(height: 40),
+          SubmitButtonWidget(
+            title: LocaleKeys.register.tr(),
+            onPressed: () async {
+              await cubit(context).onRegister();
+            },
+            disabled: !state.allFieldsFilled,
+            progress: state.progress,
+          ),
+          const SizedBox(height: 20),
+          _buildChangeScreenStateText(isLogIn: state.loginStatus),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
@@ -251,7 +258,7 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   }
 
   Widget _emailTextField(AuthState state) {
-    return UserDataInputWidget(
+    return UnderlineInputWidget(
       key: _emailTextFieldKey,
       hintText: LocaleKeys.email.tr().toLowerCase(),
       isPasswordField: false,
@@ -261,7 +268,7 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   }
 
   Widget _usernameTextField(AuthState state) {
-    return UserDataInputWidget(
+    return UnderlineInputWidget(
       key: _nameTextFieldKey,
       hintText: LocaleKeys.name.tr().toLowerCase(),
       isPasswordField: false,
@@ -271,7 +278,7 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   }
 
   Widget _passwordTextField(AuthState state) {
-    return UserDataInputWidget(
+    return UnderlineInputWidget(
       key: _passwordTextFieldKey,
       hintText: LocaleKeys.password.tr().toLowerCase(),
       isPasswordField: true,
@@ -281,7 +288,7 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
   }
 
   Widget _confirmedPasswordTextField(AuthState state) {
-    return UserDataInputWidget(
+    return UnderlineInputWidget(
       key: _confirmedPasswordTextFieldKey,
       hintText: LocaleKeys.repeat_password.tr().toLowerCase(),
       isPasswordField: true,
