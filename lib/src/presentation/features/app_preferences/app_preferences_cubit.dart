@@ -24,8 +24,6 @@ class AppPreferencesCubit extends Cubit<AppPreferencesState> {
   Future<void> checkUserAuthStatus() async {
     final userIsLogged = await _userIsLoggedInteractor.call();
 
-    logger.i(userIsLogged);
-
     emit(state.copyWith(userIsLogged: userIsLogged));
 
     if (state.userIsLogged) {
@@ -37,7 +35,6 @@ class AppPreferencesCubit extends Cubit<AppPreferencesState> {
     try {
       final user = await _getUserInfoInteractor.call();
       emit(state.copyWith(user: user));
-      logger.i(state.user);
     } on Exception catch (error) {
       logger.e(error);
     }

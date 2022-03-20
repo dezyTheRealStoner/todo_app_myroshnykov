@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
 
@@ -23,7 +24,7 @@ class TodoCardWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -48,8 +49,14 @@ class TodoCardWidget extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(
-                      '${dateTime.day} ${numToMonth(dateTime.month)} ${dateTime.year}'),
+                  Column(
+                    children: [
+                      Text(
+                          '${dateTime.day} ${numToMonth(dateTime.month)} ${dateTime.year}'),
+                      const SizedBox(height: 10),
+                      Text(DateFormat.Hm().format(dateTime)),
+                    ],
+                  ),
                   Row(
                     children: [
                       _buildIconButton(
