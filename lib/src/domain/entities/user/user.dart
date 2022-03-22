@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_language.dart';
+import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_theme.dart';
 
 const mockedUser = User(
   email: '',
@@ -6,6 +8,8 @@ const mockedUser = User(
   image: '',
   todoIds: [],
   completedTodos: 0,
+  theme: UserTheme.dark,
+  language: UserLanguage.en,
 );
 
 class User extends Equatable {
@@ -15,6 +19,8 @@ class User extends Equatable {
     required this.image,
     required this.todoIds,
     required this.completedTodos,
+    required this.theme,
+    required this.language,
   });
 
   final String email;
@@ -22,6 +28,8 @@ class User extends Equatable {
   final String image;
   final List<dynamic> todoIds;
   final int completedTodos;
+  final UserTheme theme;
+  final UserLanguage language;
 
   @override
   List<Object?> get props => [
@@ -30,6 +38,8 @@ class User extends Equatable {
         image,
         todoIds,
         completedTodos,
+        theme,
+        language,
       ];
 
   User copyWith({
@@ -38,6 +48,8 @@ class User extends Equatable {
     String? image,
     List<String>? todoIds,
     int? completedTodos,
+    UserTheme? theme,
+    UserLanguage? language,
   }) {
     return User(
       email: email ?? this.email,
@@ -45,6 +57,8 @@ class User extends Equatable {
       image: image ?? this.image,
       todoIds: todoIds ?? this.todoIds,
       completedTodos: completedTodos ?? this.completedTodos,
+      theme: theme ?? this.theme,
+      language: language ?? this.language,
     );
   }
 
@@ -55,6 +69,8 @@ class User extends Equatable {
       'image': image,
       'todoIds': todoIds,
       'completedTodos': completedTodos,
+      'theme': theme,
+      'language': language,
     };
   }
 
@@ -63,5 +79,7 @@ class User extends Equatable {
         name = map['name'] as String,
         image = map['image'] as String,
         todoIds = map['todosIds'] as List<String>,
-        completedTodos = map['completedTodos'] as int;
+        completedTodos = map['completedTodos'] as int,
+        theme = map['theme'] as UserTheme,
+        language = map['language'] as UserLanguage;
 }

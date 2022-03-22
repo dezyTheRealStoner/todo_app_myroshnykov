@@ -1,0 +1,1 @@
+enum UserLanguage { en, uk }

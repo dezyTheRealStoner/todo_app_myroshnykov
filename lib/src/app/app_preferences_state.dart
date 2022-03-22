@@ -5,7 +5,7 @@ class AppPreferencesState extends Equatable {
   const AppPreferencesState({
     this.userIsLogged = false,
     this.user = mockedUser,
-  });
+  }) : super();
 
   final User user;
   final bool userIsLogged;
