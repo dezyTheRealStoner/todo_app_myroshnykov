@@ -6,6 +6,7 @@ import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
 class TodoMapper {
   Todo fromDocument(DocumentSnapshot doc) {
     return Todo(
+      id: doc.id,
       title: doc.get('title'),
       description: doc.get('description'),
       dateTime: (doc.get('dateTime') as Timestamp).toDate(),

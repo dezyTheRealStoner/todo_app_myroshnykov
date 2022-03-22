@@ -11,6 +11,14 @@ class TodoDataSource {
   final CollectionReference _todosCollection =
       FirebaseFirestore.instance.collection('todos');
 
+  Future<DocumentSnapshot> getTodo({
+    required String id,
+  }) async {
+    final todoSnapshot = await _todosCollection.doc(id).get();
+
+    return todoSnapshot;
+  }
+
   Future<void> updateTodoData({
     required String id,
     required String title,
@@ -28,11 +36,7 @@ class TodoDataSource {
     });
   }
 
-  Future<DocumentSnapshot> getTodo({
-    required String id,
-  }) async {
-    final todoSnapshot = await _todosCollection.doc(id).get();
-
-    return todoSnapshot;
+  Future<void> removeTodo({required String id}) async {
+    return await _todosCollection.doc(id).delete();
   }
 }

@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
 
-Future<void> showLogOutDialog({
+Future<void> showTwoActionDialog({
   required BuildContext context,
+  required String title,
   required VoidCallback onConfirm,
 }) {
   return showDialog(
@@ -14,7 +13,7 @@ Future<void> showLogOutDialog({
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text(
-        LocaleKeys.sure_about_log_out.tr(),
+        title,
         textAlign: TextAlign.center,
       ),
       actions: [
