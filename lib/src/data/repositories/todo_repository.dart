@@ -17,10 +17,12 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(
     this._authDataSource,
     this._todoDataSource,
+    this._profileDataSource,
   );
 
   final AuthDataSource _authDataSource;
   final TodoDataSource _todoDataSource;
+  final ProfileDataSource _profileDataSource;
 
   final logger = getLogger('TodoRepositoryImpl');
 
@@ -44,12 +46,15 @@ class TodoRepositoryImpl implements TodoRepository {
 
       List<dynamic> updatedTodoIds = user.todoIds..add(newTodoId);
 
-      ProfileDataSource(id: user.email).updateProfileData(
+      _profileDataSource.updateProfileData(
+        id: user.email,
         email: user.email,
         name: user.name,
         image: user.image,
         todoIds: updatedTodoIds,
         completedTodos: user.completedTodos,
+        theme: themeToString(user.theme),
+        language: languageToString(user.language),
       );
     } on Exception catch (error) {
       logger.e('$error, hashCode: ${error.hashCode}');

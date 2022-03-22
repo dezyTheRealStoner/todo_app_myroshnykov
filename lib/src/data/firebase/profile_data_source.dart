@@ -4,27 +4,30 @@ import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 @LazySingleton()
 class ProfileDataSource {
-  ProfileDataSource({required this.id});
-
-  final String id;
+  ProfileDataSource();
 
   final logger = getLogger('ProfileDataSource');
 
   final CollectionReference _profilesCollection =
       FirebaseFirestore.instance.collection('profiles');
 
-  Future<DocumentSnapshot> getUserProfileData() async {
+  Future<DocumentSnapshot> getUserProfileData(
+    String id,
+  ) async {
     final profileSnapshot = await _profilesCollection.doc(id).get();
 
     return profileSnapshot;
   }
 
   Future<void> updateProfileData({
+    required String id,
     required String email,
     required String name,
     required String image,
     required List<dynamic> todoIds,
     required int completedTodos,
+    required String theme,
+    required String language,
   }) async {
     return await _profilesCollection.doc(id).set({
       'email': email,
@@ -32,6 +35,8 @@ class ProfileDataSource {
       'image': image,
       'todoIds': todoIds,
       'completedTodos': completedTodos,
+      'theme': theme,
+      'language': language,
     });
   }
 }

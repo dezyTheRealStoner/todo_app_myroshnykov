@@ -1,12 +1,16 @@
 import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_language.dart';
+import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_theme.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/dialogs/log_out_dialog.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/profile/profile_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/outlined_button_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/switcher_button_widget.dart';
 
 class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -25,10 +29,12 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
         bottomNavigationBar:
             const BottomNavigationBarWidget(currentTabIndex: 2),
         body: SafeArea(
-          child: Center(
-            child: state.updating
-                ? const CircularProgressIndicator()
-                : _buildBody(context, state),
+          child: SingleChildScrollView(
+            child: Center(
+              child: state.updating
+                  ? const CircularProgressIndicator()
+                  : _buildBody(context, state),
+            ),
           ),
         ),
       ),
@@ -48,21 +54,52 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
         const SizedBox(height: 20),
         _buildCompletedTodoText(context, state),
         const SizedBox(height: 60),
-        _buildActionButton(
-          context: context,
+        OutlinedButtonWidget(
           title: LocaleKeys.theme.tr(),
           icon: Icons.color_lens,
-          onTap: () {},
+          onTap: () => cubit(context).onTapThemeButton(),
+          switcherButtons: [
+            SwitcherButtonWidget(
+              selected: state.lightThemeSelected,
+              title: LocaleKeys.light_theme.tr(),
+              onTap: () => cubit(context).onThemeSelected(UserTheme.light),
+            ),
+            SwitcherButtonWidget(
+              selected: state.darkThemeSelected,
+              title: LocaleKeys.dark_theme.tr(),
+              onTap: () {
+                cubit(context).onThemeSelected(UserTheme.dark);
+              },
+            ),
+          ],
+          buttonIsOpen: state.openThemeButton,
         ),
-        _buildActionButton(
-          context: context,
+        OutlinedButtonWidget(
           title: LocaleKeys.language.tr(),
           icon: Icons.language,
-          onTap: () {},
+          onTap: () => cubit(context).onTapLanguageButton(),
+          switcherButtons: [
+            SwitcherButtonWidget(
+              selected: state.englishLanguageSelected,
+              title: LocaleKeys.english.tr(),
+              onTap: () {
+                cubit(context).onLanguageSelected(UserLanguage.en);
+                context.setLocale(const Locale('en'));
+              },
+            ),
+            SwitcherButtonWidget(
+              selected: state.ukrainianLanguageSelected,
+              title: LocaleKeys.ukrainian.tr(),
+              onTap: () {
+                cubit(context).onLanguageSelected(UserLanguage.uk);
+                context.setLocale(const Locale('uk'));
+              },
+            ),
+          ],
+          buttonIsOpen: state.openLanguageButton,
         ),
         const SizedBox(height: 80),
-        _buildActionButton(
-          context: context,
+        OutlinedButtonWidget(
           title: LocaleKeys.log_out.tr(),
           icon: Icons.exit_to_app,
           onTap: () => showLogOutDialog(
@@ -73,6 +110,7 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
             },
           ),
         ),
+        const SizedBox(height: 50)
       ],
     );
   }
@@ -102,47 +140,5 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
         '${state.user.completedTodos}/${state.user.todoIds.length}';
 
     return Text('${LocaleKeys.completed_todos.tr()}: $completedTodos');
-  }
-
-  Widget _buildActionButton({
-    required BuildContext context,
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 20),
-      child: Container(
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          border: Border.all(
-            width: 1,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-        ),
-        child: InkWell(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(20),
-          ),
-          onTap: onTap,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 40,
-                width: 50,
-                child: Icon(icon),
-              ),
-              Text(title),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

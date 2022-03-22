@@ -12,7 +12,6 @@ class LocalizationWidget extends StatelessWidget {
       child: child,
       supportedLocales: const [
         Locale('en'),
-        Locale('ru'),
         Locale('uk'),
       ],
       fallbackLocale: const Locale('en'),

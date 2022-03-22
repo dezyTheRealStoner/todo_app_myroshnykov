@@ -44,7 +44,7 @@ class Themes {
     ),
   );
 
-  static final lightBlackOrange = ThemeData(
+  static final light = ThemeData(
     colorScheme: ColorScheme(
       primary: Colors.black,
       onPrimary: Colors.white,
@@ -78,7 +78,7 @@ class Themes {
     textTheme: _textTheme,
   );
 
-  static final darkTheme = ThemeData(
+  static final dark = ThemeData(
     colorScheme: ColorScheme(
       primary: Colors.white,
       onPrimary: Colors.black,

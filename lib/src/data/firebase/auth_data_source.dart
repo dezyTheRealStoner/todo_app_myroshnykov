@@ -4,16 +4,19 @@ import 'package:todo_app_myroshnykov/src/data/firebase/profile_data_source.dart'
 import 'package:todo_app_myroshnykov/src//logger/custom_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
-const _defaultImage =
-    'https://www.mzchr.ru/wp-content/uploads/2021/09/avasite.png';
+const _defaultImage = 'https://cdn-icons-png.flaticon.com/512/64/64572.png';
 
 @LazySingleton()
 class AuthDataSource {
-  AuthDataSource(this._firebase);
+  AuthDataSource(
+    this._firebase,
+    this._profileDataSource,
+  );
 
   final logger = getLogger('AuthDataSource');
 
   final firebase.FirebaseAuth _firebase;
+  final ProfileDataSource _profileDataSource;
 
   bool isUserLogged() {
     final userId = _firebase.currentUser?.uid;
@@ -25,7 +28,7 @@ class AuthDataSource {
   Future<DocumentSnapshot> getUserInfo() async {
     final userEmail = _firebase.currentUser!.email;
     final userSnapshot =
-        await ProfileDataSource(id: userEmail!).getUserProfileData();
+        await _profileDataSource.getUserProfileData(userEmail!);
 
     return userSnapshot;
   }
@@ -40,12 +43,15 @@ class AuthDataSource {
       password: password,
     );
 
-    await ProfileDataSource(id: email).updateProfileData(
+    _profileDataSource.updateProfileData(
+      id: email,
       email: email,
       name: name,
       image: _defaultImage,
       todoIds: [],
       completedTodos: 0,
+      theme: 'dark',
+      language: 'en',
     );
   }
 

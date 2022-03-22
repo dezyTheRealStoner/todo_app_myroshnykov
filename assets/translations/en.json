@@ -8,7 +8,6 @@
   "repeat_password": "Repeat password",
   "name" : "Name",
   "email" : "Email",
-  "username_already_used": "This username is already used",
   "incorrect_username": "The username cannot be less than 3 and more than 18 characters, and cannot contain special characters other than _",
   "incorrect_password": "The password must contain at least 6 characters and must contain a capital letter and a special character",
   "email_already_used": "This email is already used",
@@ -42,5 +41,9 @@
   "completed_todos": "Completed todos",
   "theme": "Theme",
   "language": "Language",
-  "sure_about_log_out": "Are you sure that you want \n to log out?"
+  "sure_about_log_out": "Are you sure that you want \n to log out?",
+  "light_theme": "Light theme",
+  "dark_theme": "Dark theme",
+  "english": "English",
+  "ukrainian": "Українська"
 }
