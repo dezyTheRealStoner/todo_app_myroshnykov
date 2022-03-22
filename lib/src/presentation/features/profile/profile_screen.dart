@@ -5,7 +5,7 @@ import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_la
 import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_theme.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
-import 'package:todo_app_myroshnykov/src/presentation/dialogs/log_out_dialog.dart';
+import 'package:todo_app_myroshnykov/src/presentation/dialogs/two_action_dialog.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/auth/auth_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/profile/profile_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
@@ -102,8 +102,9 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
         OutlinedButtonWidget(
           title: LocaleKeys.log_out.tr(),
           icon: Icons.exit_to_app,
-          onTap: () => showLogOutDialog(
+          onTap: () => showTwoActionDialog(
             context: context,
+            title: LocaleKeys.sure_about_log_out.tr(),
             onConfirm: () async {
               await cubit(context).onLogOut();
               Beamer.of(context).beamToReplacementNamed(AuthScreen.screenName);

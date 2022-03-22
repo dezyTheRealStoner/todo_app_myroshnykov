@@ -3,19 +3,19 @@ import 'package:equatable/equatable.dart';
 class UpdateTodoParams extends Equatable {
   const UpdateTodoParams({
     required this.id,
-    required this.updatedTitle,
-    required this.updatedDescription,
-    required this.updatedTodoType,
-    required this.updateDateTime,
-    required this.updatedCompleteStatus,
+    required this.title,
+    required this.description,
+    required this.todoType,
+    required this.dateTime,
+    required this.completed,
   });
 
   final String id;
-  final String updatedTitle;
-  final String updatedDescription;
-  final String updatedTodoType;
-  final DateTime updateDateTime;
-  final bool updatedCompleteStatus;
+  final String title;
+  final String description;
+  final String todoType;
+  final DateTime dateTime;
+  final bool completed;
 
   UpdateTodoParams copyWith(
     String? id,
@@ -27,22 +27,21 @@ class UpdateTodoParams extends Equatable {
   ) {
     return UpdateTodoParams(
       id: id ?? this.id,
-      updatedTitle: updatedTitle ?? this.updatedTitle,
-      updatedDescription: updatedDescription ?? this.updatedDescription,
-      updatedTodoType: updatedTodoType ?? this.updatedTodoType,
-      updateDateTime: updateDateTime ?? this.updateDateTime,
-      updatedCompleteStatus:
-          updatedCompleteStatus ?? this.updatedCompleteStatus,
+      title: updatedTitle ?? title,
+      description: updatedDescription ?? description,
+      todoType: updatedTodoType ?? todoType,
+      dateTime: updateDateTime ?? dateTime,
+      completed: updatedCompleteStatus ?? completed,
     );
   }
 
   @override
   List<Object?> get props => [
         id,
-        updatedTitle,
-        updatedDescription,
-        updatedTodoType,
-        updateDateTime,
-        updatedCompleteStatus,
+        title,
+        description,
+        todoType,
+        dateTime,
+        completed,
       ];
 }

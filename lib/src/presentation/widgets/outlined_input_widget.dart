@@ -59,7 +59,8 @@ class _OutlinedInputWidgetState extends State<OutlinedInputWidget> {
           errorText: widget.errorText,
           errorMaxLines: 3,
           isDense: true,
-          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           disabledBorder: _inputBorder(
             context: context,
             isError: widget.errorText != null,

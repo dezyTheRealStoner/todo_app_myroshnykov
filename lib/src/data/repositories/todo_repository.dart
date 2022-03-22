@@ -10,6 +10,7 @@ import 'package:todo_app_myroshnykov/src/domain/entities/todo/add_todo_params.da
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/update_todo_params.dart';
 import 'package:todo_app_myroshnykov/src/domain/repositories/todo_repository.dart';
+import 'package:todo_app_myroshnykov/src/domain/repositories/user_repository.dart';
 import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 @LazySingleton(as: TodoRepository)
@@ -18,11 +19,13 @@ class TodoRepositoryImpl implements TodoRepository {
     this._authDataSource,
     this._todoDataSource,
     this._profileDataSource,
+    this._userRepository,
   );
 
   final AuthDataSource _authDataSource;
   final TodoDataSource _todoDataSource;
   final ProfileDataSource _profileDataSource;
+  final UserRepository _userRepository;
 
   final logger = getLogger('TodoRepositoryImpl');
 
@@ -69,9 +72,28 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<void> removeTodo(String id) {
-    // TODO: implement removeTodo
-    throw UnimplementedError();
+  Future<void> removeTodo(String id) async {
+    try {
+      final user = await _userRepository.getUserInfo();
+
+      user.todoIds.remove(id);
+
+      await _profileDataSource.updateProfileData(
+        id: user.email,
+        email: user.email,
+        name: user.name,
+        image: user.image,
+        todoIds: user.todoIds,
+        completedTodos: user.completedTodos,
+        theme: themeToString(user.theme),
+        language: languageToString(user.language),
+      );
+
+      await _todoDataSource.removeTodo(id: id);
+    } on Exception catch (error) {
+      logger.e('$error, hashCode: ${error.hashCode}');
+      throw Exception();
+    }
   }
 
   @override
@@ -79,11 +101,11 @@ class TodoRepositoryImpl implements TodoRepository {
     try {
       _todoDataSource.updateTodoData(
         id: params.id,
-        title: params.updatedTitle,
-        description: params.updatedDescription,
-        todoType: params.updatedTodoType,
-        dateTime: params.updateDateTime,
-        completed: params.updatedCompleteStatus,
+        title: params.title,
+        description: params.description,
+        todoType: params.todoType,
+        dateTime: params.dateTime,
+        completed: params.completed,
       );
     } on Exception catch (error) {
       logger.e('$error, hashCode: ${error.hashCode}');
