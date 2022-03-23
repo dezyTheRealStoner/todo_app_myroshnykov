@@ -9,28 +9,20 @@ const _defaultImage = 'https://cdn-icons-png.flaticon.com/512/64/64572.png';
 @LazySingleton()
 class AuthDataSource {
   AuthDataSource(
-    this._firebase,
+    this._firebaseAuth,
     this._profileDataSource,
   );
 
-  final logger = getLogger('AuthDataSource');
-
-  final firebase.FirebaseAuth _firebase;
+  final firebase.FirebaseAuth _firebaseAuth;
   final ProfileDataSource _profileDataSource;
 
+  final logger = getLogger('AuthDataSource');
+
   bool isUserLogged() {
-    final userId = _firebase.currentUser?.uid;
+    final userId = _firebaseAuth.currentUser?.uid;
     logger.i(userId);
 
     return userId != null || userId == '';
-  }
-
-  Future<DocumentSnapshot> getUserInfo() async {
-    final userEmail = _firebase.currentUser!.email;
-    final userSnapshot =
-        await _profileDataSource.getUserProfileData(userEmail!);
-
-    return userSnapshot;
   }
 
   Future<void> registerWithEmailAndPassword({
@@ -38,18 +30,17 @@ class AuthDataSource {
     required String name,
     required String password,
   }) async {
-    await _firebase.createUserWithEmailAndPassword(
+    await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     _profileDataSource.updateProfileData(
-      id: email,
       email: email,
       name: name,
       image: _defaultImage,
-      todoIds: [],
       completedTodos: 0,
+      todoIds: [],
       theme: 'dark',
       language: 'en',
     );
@@ -59,13 +50,13 @@ class AuthDataSource {
     required String email,
     required String password,
   }) async {
-    await _firebase.signInWithEmailAndPassword(
+    await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
   Future<void> logOut() {
-    return _firebase.signOut();
+    return _firebaseAuth.signOut();
   }
 }

@@ -137,9 +137,8 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
   }
 
   Widget _buildCompletedTodoText(BuildContext context, ProfileState state) {
-    final completedTodos =
-        '${state.user.completedTodos}/${state.user.todoIds.length}';
+    final text = '${state.user.completedTodos}/${state.user.todoIds.length}';
 
-    return Text('${LocaleKeys.completed_todos.tr()}: $completedTodos');
+    return Text('${LocaleKeys.completed_todos.tr()}: $text');
   }
 }

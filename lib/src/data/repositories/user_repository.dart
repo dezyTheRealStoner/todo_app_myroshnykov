@@ -9,11 +9,9 @@ import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl(
-    this._authDataSource,
     this._profileDataSource,
   );
 
-  final AuthDataSource _authDataSource;
   final ProfileDataSource _profileDataSource;
 
   final logger = getLogger('UserRepositoryImpl');
@@ -21,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<User> getUserInfo() async {
     try {
-      final userSnapshot = await _authDataSource.getUserInfo();
+      final userSnapshot = await _profileDataSource.getUserProfileData();
 
       final user = UserMapper().fromDocument(userSnapshot);
 
@@ -36,12 +34,11 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> updateUserInfo(User user) async {
     try {
       await _profileDataSource.updateProfileData(
-        id: user.email,
         email: user.email,
         name: user.name,
         image: user.image,
-        todoIds: user.todoIds,
         completedTodos: user.completedTodos,
+        todoIds: user.todoIds,
         theme: themeToString(user.theme),
         language: languageToString(user.language),
       );

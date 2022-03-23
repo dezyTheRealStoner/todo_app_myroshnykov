@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:injectable/injectable.dart';
-import 'package:todo_app_myroshnykov/src/data/firebase/auth_data_source.dart';
 import 'package:todo_app_myroshnykov/src/data/firebase/profile_data_source.dart';
 import 'package:todo_app_myroshnykov/src/data/firebase/todo_data_source.dart';
 import 'package:todo_app_myroshnykov/src/data/mappers/todo_mapper.dart';
@@ -16,13 +15,11 @@ import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 @LazySingleton(as: TodoRepository)
 class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(
-    this._authDataSource,
     this._todoDataSource,
     this._profileDataSource,
     this._userRepository,
   );
 
-  final AuthDataSource _authDataSource;
   final TodoDataSource _todoDataSource;
   final ProfileDataSource _profileDataSource;
   final UserRepository _userRepository;
@@ -35,7 +32,7 @@ class TodoRepositoryImpl implements TodoRepository {
 
     try {
       _todoDataSource.updateTodoData(
-        id: newTodoId,
+        todoId: newTodoId,
         title: params.title,
         description: params.description,
         todoType: params.todoType,
@@ -43,19 +40,16 @@ class TodoRepositoryImpl implements TodoRepository {
         completed: false,
       );
 
-      final userSnapshot = await _authDataSource.getUserInfo();
+      final userSnapshot = await _profileDataSource.getUserProfileData();
 
       final user = UserMapper().fromDocument(userSnapshot);
 
-      List<dynamic> updatedTodoIds = user.todoIds..add(newTodoId);
-
       _profileDataSource.updateProfileData(
-        id: user.email,
         email: user.email,
         name: user.name,
         image: user.image,
-        todoIds: updatedTodoIds,
         completedTodos: user.completedTodos,
+        todoIds: user.todoIds..add(newTodoId),
         theme: themeToString(user.theme),
         language: languageToString(user.language),
       );
@@ -66,12 +60,6 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<void> changeTodoCompleteStatus(String id) {
-    // TODO: implement changeTodoCompleteStatus
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> removeTodo(String id) async {
     try {
       final user = await _userRepository.getUserInfo();
@@ -79,7 +67,6 @@ class TodoRepositoryImpl implements TodoRepository {
       user.todoIds.remove(id);
 
       await _profileDataSource.updateProfileData(
-        id: user.email,
         email: user.email,
         name: user.name,
         image: user.image,
@@ -99,14 +86,27 @@ class TodoRepositoryImpl implements TodoRepository {
   @override
   Future<void> updateTodo(UpdateTodoParams params) async {
     try {
+      final user = await _userRepository.getUserInfo();
+
       _todoDataSource.updateTodoData(
-        id: params.id,
+        todoId: params.id,
         title: params.title,
         description: params.description,
         todoType: params.todoType,
         dateTime: params.dateTime,
         completed: params.completed,
       );
+      if (params.completed) {
+        _profileDataSource.updateProfileData(
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          todoIds: user.todoIds,
+          completedTodos: user.completedTodos + 1,
+          theme: themeToString(user.theme),
+          language: languageToString(user.language),
+        );
+      }
     } on Exception catch (error) {
       logger.e('$error, hashCode: ${error.hashCode}');
       throw Exception();
@@ -114,9 +114,17 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Todo> getTodo(String id) {
-    // TODO: implement getTodo
-    throw UnimplementedError();
+  Future<Todo> getTodo(String id) async {
+    try {
+      final todoSnapshot = await _todoDataSource.getTodo(todoId: id);
+
+      final todo = TodoMapper().fromDocument(todoSnapshot);
+
+      return todo;
+    } on Exception catch (error) {
+      logger.e(error);
+      throw Exception();
+    }
   }
 
   @override
@@ -125,7 +133,9 @@ class TodoRepositoryImpl implements TodoRepository {
       List<Todo> todoList = [];
 
       for (var todoId in todoIds) {
-        final todoSnapshot = await _todoDataSource.getTodo(id: todoId);
+        final todoSnapshot = await _todoDataSource.getTodo(
+          todoId: todoId,
+        );
 
         final todo = TodoMapper().fromDocument(todoSnapshot);
 
@@ -154,5 +164,17 @@ class TodoRepositoryImpl implements TodoRepository {
         (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
       ),
     );
+  }
+
+  @override
+  Future<void> changeTodoCompleteStatus(String id) {
+    // TODO: implement changeTodoCompleteStatus
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Todo>> getCompletedTodos(List todoIds) {
+    // TODO: implement getCompletedTodos
+    throw UnimplementedError();
   }
 }
