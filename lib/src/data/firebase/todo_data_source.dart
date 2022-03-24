@@ -14,6 +14,8 @@ class TodoDataSource {
 
   final logger = getLogger('TodosDataSource');
 
+  static const todosCollectionName = 'todos';
+
   Future<DocumentSnapshot> getTodo({
     required String todoId,
   }) async {
@@ -21,7 +23,7 @@ class TodoDataSource {
 
     final todoSnapshot = await _profilesCollection
         .doc(userId)
-        .collection('todos')
+        .collection(todosCollectionName)
         .doc(todoId)
         .get();
 
@@ -34,7 +36,7 @@ class TodoDataSource {
   }) async {
     final todoSnapshot = await _profilesCollection
         .doc(id)
-        .collection('todos')
+        .collection(todosCollectionName)
         .where(FieldPath.fromString('completed'), isEqualTo: true)
         .get();
 
@@ -53,7 +55,7 @@ class TodoDataSource {
 
     return await _profilesCollection
         .doc(userId)
-        .collection('todos')
+        .collection(todosCollectionName)
         .doc(todoId)
         .set({
       'title': title,
@@ -65,6 +67,12 @@ class TodoDataSource {
   }
 
   Future<void> removeTodo({required String id}) async {
-    return await _profilesCollection.doc(id).delete();
+    final userId = _firebaseAuth.currentUser!.email;
+
+    return await _profilesCollection
+        .doc(userId)
+        .collection(todosCollectionName)
+        .doc(id)
+        .delete();
   }
 }

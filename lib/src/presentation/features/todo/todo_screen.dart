@@ -218,7 +218,7 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
             onConfirm: (date) {
               cubit(context).onDateSelect(date);
             },
-            currentTime: DateTime.now(),
+            currentTime: state.dateTime,
           );
         },
         icon: Icon(

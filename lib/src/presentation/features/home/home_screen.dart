@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
+import 'package:todo_app_myroshnykov/src/presentation/dialogs/two_action_dialog.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
@@ -70,6 +71,17 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
                   itemCount: state.todoList.length,
                   itemBuilder: (context, index) => TodoCardWidget(
                     todo: state.todoList.elementAt(index),
+                    onRemove: () => showTwoActionDialog(
+                      context: context,
+                      title: LocaleKeys.sure_want_delete.tr(),
+                      onConfirm: () async {
+                        await cubit(context)
+                            .onRemoveTodo(state.todoList.elementAt(index).id);
+                        Navigator.pop(context);
+                        await Future.delayed(const Duration(seconds: 1));
+                        await cubit(context).getAllUserTodos();
+                      },
+                    ),
                   ),
                 ),
         ),

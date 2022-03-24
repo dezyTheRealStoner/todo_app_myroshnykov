@@ -48,7 +48,7 @@ class ProfileDataSource {
     final userId = _firebaseAuth.currentUser!.email;
 
     final todosSnapshot =
-        await _profilesCollection.doc(userId).collection('todos').get();
+        await _profilesCollection.doc(userId).collection('all_todos').get();
 
     return todosSnapshot;
   }
