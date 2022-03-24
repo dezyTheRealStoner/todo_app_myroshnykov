@@ -213,27 +213,6 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
     );
   }
 
-  Widget _buildChangeScreenStateText({required bool isLogIn}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          isLogIn
-              ? LocaleKeys.dont_have_account.tr()
-              : LocaleKeys.do_you_have_account.tr(),
-        ),
-        GestureDetector(
-          onTap: () => cubit(context).onChangeAuthState(),
-          child: Text(
-            isLogIn ? LocaleKeys.register_now.tr() : LocaleKeys.log_in.tr(),
-            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildTextFields(AuthState state) {
     return state.loginStatus
         ? Column(
@@ -296,6 +275,28 @@ class _AuthScreenState extends CubitState<AuthScreen, AuthState, AuthCubit> {
           ? LocaleKeys.password_mismatch.tr()
           : null,
       controller: _confirmedPasswordController,
+    );
+  }
+
+  Widget _buildChangeScreenStateText({required bool isLogIn}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          isLogIn
+              ? LocaleKeys.dont_have_account.tr()
+              : LocaleKeys.do_you_have_account.tr(),
+        ),
+        const SizedBox(height: 5),
+        GestureDetector(
+          onTap: () => cubit(context).onChangeAuthState(),
+          child: Text(
+            isLogIn ? LocaleKeys.register_now.tr() : LocaleKeys.log_in.tr(),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+          ),
+        ),
+      ],
     );
   }
 }

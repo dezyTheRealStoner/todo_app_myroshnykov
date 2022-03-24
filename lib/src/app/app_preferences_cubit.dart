@@ -7,7 +7,6 @@ import 'package:todo_app_myroshnykov/src/domain/entities/user/user.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/auth/user_is_logged_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/user/get_user_info_interactor.dart';
 import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/themes/themes.dart';
 
 part 'app_preferences_state.dart';
 

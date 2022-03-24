@@ -19,19 +19,19 @@ class UpdateTodoParams extends Equatable {
 
   UpdateTodoParams copyWith(
     String? id,
-    String? updatedTitle,
-    String? updatedDescription,
-    String? updatedTodoType,
-    DateTime? updateDateTime,
-    bool? updatedCompleteStatus,
+    String? title,
+    String? description,
+    String? todoType,
+    DateTime? dateTime,
+    bool? completed,
   ) {
     return UpdateTodoParams(
       id: id ?? this.id,
-      title: updatedTitle ?? title,
-      description: updatedDescription ?? description,
-      todoType: updatedTodoType ?? todoType,
-      dateTime: updateDateTime ?? dateTime,
-      completed: updatedCompleteStatus ?? completed,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      todoType: todoType ?? this.todoType,
+      dateTime: dateTime ?? this.dateTime,
+      completed: completed ?? this.completed,
     );
   }
 

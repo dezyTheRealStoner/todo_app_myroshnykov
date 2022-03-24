@@ -20,7 +20,7 @@ class SubmitButtonWidget extends StatelessWidget {
 
     return SizedBox(
       height: 50,
-      width: 120,
+      width: 180,
       child: ElevatedButton(
         onPressed: progress || disabled ? null : () => onPressed(),
         style: ButtonStyle(

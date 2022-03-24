@@ -12,20 +12,20 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  flutter_bloc: ^8.0.1
-  get_it: ^7.2.0
-  injectable: ^1.5.3
-  easy_localization: ^3.0.0
-  injectable_generator: ^1.5.3
-  logger: ^1.1.0
-  beamer: ^1.4.0+1
-  firebase: ^9.0.2
-  firebase_auth: ^3.3.11
-  cloud_firestore: ^3.1.10
-  firebase_core: ^1.13.1
-  equatable: ^2.0.3
-  flutter_datetime_picker: ^1.5.1
+  cupertino_icons: 1.0.2
+  flutter_bloc: 8.0.1
+  get_it: 7.2.0
+  injectable: 1.5.3
+  easy_localization: 3.0.0
+  injectable_generator: 1.5.3
+  logger: 1.1.0
+  beamer: 1.4.0+1
+  firebase: 9.0.2
+  firebase_auth: 3.3.11
+  cloud_firestore: 3.1.10
+  firebase_core: 1.13.1
+  equatable: 2.0.3
+  flutter_datetime_picker: 1.5.1
 
 dev_dependencies:
   flutter_test:
