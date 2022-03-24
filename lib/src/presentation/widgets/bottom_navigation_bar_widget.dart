@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/profile/profile_screen.dart';
-import 'package:todo_app_myroshnykov/src/presentation/features/todos/todos_screen.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/all_todos/all_todos_screen.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   const BottomNavigationBarWidget({
@@ -19,7 +19,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
       case 0:
         return _navigateTo(HomeScreen.screenName, context);
       case 1:
-        return _navigateTo(TodosScreen.screenName, context);
+        return _navigateTo(AllTodosScreen.screenName, context);
       case 2:
         return _navigateTo(ProfileScreen.screenName, context);
     }

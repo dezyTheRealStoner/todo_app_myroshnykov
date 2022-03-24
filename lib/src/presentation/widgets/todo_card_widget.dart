@@ -10,9 +10,11 @@ class TodoCardWidget extends StatelessWidget {
   const TodoCardWidget({
     Key? key,
     required this.todo,
+    required this.onRemove,
   }) : super(key: key);
 
   final Todo todo;
+  final VoidCallback onRemove;
 
   void _navigateToTodoScreen(BuildContext context) {
     Beamer.of(context).beamToNamed(
@@ -82,7 +84,7 @@ class TodoCardWidget extends StatelessWidget {
                       IconButtonWidget(
                         icon: Icons.delete_forever,
                         color: Colors.red,
-                        onTap: () {},
+                        onTap: onRemove,
                       ),
                     ],
                   ),

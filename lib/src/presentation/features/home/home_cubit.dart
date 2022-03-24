@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/todo/get_all_user_todos_interactor.dart';
+import 'package:todo_app_myroshnykov/src/domain/interactors/todo/remove_todo_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/user/get_user_info_interactor.dart';
 import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
@@ -13,10 +14,12 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(
     this._getAllUserTodosInteractor,
     this._getUserInfoInteractor,
+    this._removeTodoInteractor,
   ) : super(const HomeState());
 
   final GetAllUserTodosInteractor _getAllUserTodosInteractor;
   final GetUserInfoInteractor _getUserInfoInteractor;
+  final RemoveTodoInteractor _removeTodoInteractor;
 
   final logger = getLogger('HomeCubit');
 
@@ -42,6 +45,14 @@ class HomeCubit extends Cubit<HomeState> {
       logger.e(error);
     } finally {
       emit(state.copyWith(updating: false));
+    }
+  }
+
+  Future<void> onRemoveTodo(String id) async {
+    try {
+      _removeTodoInteractor.call(id);
+    } on Exception catch (error) {
+      logger.e(error);
     }
   }
 }

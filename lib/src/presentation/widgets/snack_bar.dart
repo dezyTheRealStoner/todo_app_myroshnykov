@@ -10,7 +10,12 @@ SnackBar snackBar({
     content: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(label),
+        Flexible(
+          child: Text(
+            label,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
       ],
     ),
     behavior: SnackBarBehavior.floating,
