@@ -30,33 +30,38 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
 
   Widget _buildBody(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          ScreenTitleWidget(
-            title: LocaleKeys.your_coming_todos.tr(),
-          ),
-          const SizedBox(height: 20),
-          _buildList(context),
-          const SizedBox(height: 20),
-          ActionButtonWidget(title: LocaleKeys.add_todo.tr()),
-          const SizedBox(height: 20),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ScreenTitleWidget(
+              title: LocaleKeys.your_coming_todos.tr(),
+            ),
+            const SizedBox(height: 20),
+            _buildList(context),
+            const SizedBox(height: 20),
+            ActionButtonWidget(title: LocaleKeys.add_todo.tr()),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildList(BuildContext context) {
     return observeState(
-      builder: (context, state) => TodoListWidget(
-        updating: state.updating,
-        listLength: state.todoList.length,
-        todoList: state.todoList,
-        onRemoveConfirm: (index) async {
-          await cubit(context).onRemoveTodo(state.todoList.elementAt(index).id);
-          Navigator.pop(context);
-          await Future.delayed(const Duration(seconds: 1));
-          await cubit(context).getAllUserTodos();
-        },
+      builder: (context, state) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.55,
+        child: TodoListWidget(
+          updating: state.updating,
+          listLength: state.todoList.length,
+          todoList: state.todoList,
+          onRemoveConfirm: (index) async {
+            await cubit(context)
+                .onRemoveTodo(state.todoList.elementAt(index).id);
+            Navigator.pop(context);
+            await Future.delayed(const Duration(seconds: 1));
+            await cubit(context).getAllUserTodos();
+          },
+        ),
       ),
     );
   }

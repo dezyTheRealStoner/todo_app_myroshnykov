@@ -23,32 +23,31 @@ class TodoListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(width: 1),
-        ),
-        child: updating
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemCount: listLength,
-                itemBuilder: (context, index) => TodoCardWidget(
-                  todo: todoList.elementAt(index),
-                  onRemove: () => showTwoActionDialog(
-                    context: context,
-                    title: LocaleKeys.sure_want_delete.tr(),
-                    onConfirm: () {
-                      onRemoveConfirm(index);
-                    },
-                  ),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1),
+      ),
+      child: updating
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              shrinkWrap: true,
+              itemCount: listLength,
+              itemBuilder: (context, index) => TodoCardWidget(
+                todo: todoList.elementAt(index),
+                onRemove: () => showTwoActionDialog(
+                  context: context,
+                  title: LocaleKeys.sure_want_delete.tr(),
+                  onConfirm: () {
+                    onRemoveConfirm(index);
+                  },
                 ),
               ),
-      ),
+            ),
     );
   }
 }

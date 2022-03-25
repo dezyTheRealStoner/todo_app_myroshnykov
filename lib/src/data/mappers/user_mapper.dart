@@ -12,7 +12,6 @@ class UserMapper {
       name: doc.get('name'),
       image: doc.get('image'),
       todoIds: doc.get('todoIds'),
-      completedTodos: doc.get('completedTodos'),
       theme: stringToTheme(doc.get('theme')),
       language: stringToLanguage(doc.get('language')),
     );

@@ -7,7 +7,6 @@ const mockedUser = User(
   name: '',
   image: '',
   todoIds: [],
-  completedTodos: 0,
   theme: UserTheme.dark,
   language: UserLanguage.en,
 );
@@ -18,7 +17,6 @@ class User extends Equatable {
     required this.name,
     required this.image,
     required this.todoIds,
-    required this.completedTodos,
     required this.theme,
     required this.language,
   });
@@ -27,7 +25,6 @@ class User extends Equatable {
   final String name;
   final String image;
   final List<dynamic> todoIds;
-  final int completedTodos;
   final UserTheme theme;
   final UserLanguage language;
 
@@ -37,7 +34,6 @@ class User extends Equatable {
         name,
         image,
         todoIds,
-        completedTodos,
         theme,
         language,
       ];
@@ -47,7 +43,6 @@ class User extends Equatable {
     String? name,
     String? image,
     List<String>? todoIds,
-    int? completedTodos,
     UserTheme? theme,
     UserLanguage? language,
   }) {
@@ -56,7 +51,6 @@ class User extends Equatable {
       name: name ?? this.name,
       image: image ?? this.image,
       todoIds: todoIds ?? this.todoIds,
-      completedTodos: completedTodos ?? this.completedTodos,
       theme: theme ?? this.theme,
       language: language ?? this.language,
     );
@@ -68,7 +62,6 @@ class User extends Equatable {
       'name': name,
       'image': image,
       'todoIds': todoIds,
-      'completedTodos': completedTodos,
       'theme': theme,
       'language': language,
     };
@@ -79,7 +72,6 @@ class User extends Equatable {
         name = map['name'] as String,
         image = map['image'] as String,
         todoIds = map['todosIds'] as List<String>,
-        completedTodos = map['completedTodos'] as int,
         theme = map['theme'] as UserTheme,
         language = map['language'] as UserLanguage;
 }

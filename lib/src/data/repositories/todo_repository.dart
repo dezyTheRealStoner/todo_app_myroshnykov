@@ -48,7 +48,6 @@ class TodoRepositoryImpl implements TodoRepository {
         email: user.email,
         name: user.name,
         image: user.image,
-        completedTodos: user.completedTodos,
         todoIds: user.todoIds..add(newTodoId),
         theme: themeToString(user.theme),
         language: languageToString(user.language),
@@ -71,7 +70,6 @@ class TodoRepositoryImpl implements TodoRepository {
         name: user.name,
         image: user.image,
         todoIds: user.todoIds,
-        completedTodos: user.completedTodos,
         theme: themeToString(user.theme),
         language: languageToString(user.language),
       );
@@ -156,8 +154,15 @@ class TodoRepositoryImpl implements TodoRepository {
 
         final todo = TodoMapper().fromDocument(todoSnapshot);
 
-        actualTodoList.add(todo);
+        if (todo.dateTime.isAfter(DateTime.now()) && !todo.completed) {
+          actualTodoList.add(todo);
+        }
       }
+
+      actualTodoList.sort(
+        (a, b) => a.dateTime.compareTo(b.dateTime),
+      );
+
       return actualTodoList;
     } on Exception catch (error) {
       logger.e(error);

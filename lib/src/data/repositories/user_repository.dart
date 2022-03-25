@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:todo_app_myroshnykov/src/data/firebase/auth_data_source.dart';
 import 'package:todo_app_myroshnykov/src/data/firebase/profile_data_source.dart';
 import 'package:todo_app_myroshnykov/src/data/mappers/user_mapper.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/user/user.dart';
@@ -37,7 +36,6 @@ class UserRepositoryImpl implements UserRepository {
         email: user.email,
         name: user.name,
         image: user.image,
-        completedTodos: user.completedTodos,
         todoIds: user.todoIds,
         theme: themeToString(user.theme),
         language: languageToString(user.language),

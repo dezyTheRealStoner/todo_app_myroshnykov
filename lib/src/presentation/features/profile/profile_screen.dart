@@ -29,12 +29,10 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
         bottomNavigationBar:
             const BottomNavigationBarWidget(currentTabIndex: 2),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Center(
-              child: state.updating
-                  ? const CircularProgressIndicator()
-                  : _buildBody(context, state),
-            ),
+          child: Center(
+            child: state.updating
+                ? const CircularProgressIndicator()
+                : _buildBody(context, state),
           ),
         ),
       ),
@@ -45,74 +43,77 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
     BuildContext context,
     ProfileState state,
   ) {
-    return Column(
-      children: [
-        const SizedBox(height: 50),
-        _buildImage(context, state),
-        const SizedBox(height: 20),
-        _buildName(context, state),
-        const SizedBox(height: 20),
-        _buildCompletedTodoText(context, state),
-        const SizedBox(height: 60),
-        OutlinedButtonWidget(
-          title: LocaleKeys.theme.tr(),
-          icon: Icons.color_lens,
-          onTap: () => cubit(context).onTapThemeButton(),
-          switcherButtons: [
-            SwitcherButtonWidget(
-              selected: state.lightThemeSelected,
-              title: LocaleKeys.light_theme.tr(),
-              onTap: () => cubit(context).onThemeSelected(UserTheme.light),
-            ),
-            SwitcherButtonWidget(
-              selected: state.darkThemeSelected,
-              title: LocaleKeys.dark_theme.tr(),
-              onTap: () {
-                cubit(context).onThemeSelected(UserTheme.dark);
-              },
-            ),
-          ],
-          buttonIsOpen: state.openThemeButton,
-        ),
-        OutlinedButtonWidget(
-          title: LocaleKeys.language.tr(),
-          icon: Icons.language,
-          onTap: () => cubit(context).onTapLanguageButton(),
-          switcherButtons: [
-            SwitcherButtonWidget(
-              selected: state.englishLanguageSelected,
-              title: LocaleKeys.english.tr(),
-              onTap: () {
-                cubit(context).onLanguageSelected(UserLanguage.en);
-                context.setLocale(const Locale('en'));
-              },
-            ),
-            SwitcherButtonWidget(
-              selected: state.ukrainianLanguageSelected,
-              title: LocaleKeys.ukrainian.tr(),
-              onTap: () {
-                cubit(context).onLanguageSelected(UserLanguage.uk);
-                context.setLocale(const Locale('uk'));
-              },
-            ),
-          ],
-          buttonIsOpen: state.openLanguageButton,
-        ),
-        const SizedBox(height: 80),
-        OutlinedButtonWidget(
-          title: LocaleKeys.log_out.tr(),
-          icon: Icons.exit_to_app,
-          onTap: () => showTwoActionDialog(
-            context: context,
-            title: LocaleKeys.sure_about_log_out.tr(),
-            onConfirm: () async {
-              await cubit(context).onLogOut();
-              Beamer.of(context).beamToReplacementNamed(AuthScreen.screenName);
-            },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 50),
+          _buildImage(context, state),
+          const SizedBox(height: 20),
+          _buildName(context, state),
+          const SizedBox(height: 20),
+          _buildCompletedTodoText(context, state),
+          const SizedBox(height: 60),
+          OutlinedButtonWidget(
+            title: LocaleKeys.theme.tr(),
+            icon: Icons.color_lens,
+            onTap: () => cubit(context).onTapThemeButton(),
+            switcherButtons: [
+              SwitcherButtonWidget(
+                selected: state.lightThemeSelected,
+                title: LocaleKeys.light_theme.tr(),
+                onTap: () => cubit(context).onThemeSelected(UserTheme.light),
+              ),
+              SwitcherButtonWidget(
+                selected: state.darkThemeSelected,
+                title: LocaleKeys.dark_theme.tr(),
+                onTap: () {
+                  cubit(context).onThemeSelected(UserTheme.dark);
+                },
+              ),
+            ],
+            buttonIsOpen: state.openThemeButton,
           ),
-        ),
-        const SizedBox(height: 50)
-      ],
+          OutlinedButtonWidget(
+            title: LocaleKeys.language.tr(),
+            icon: Icons.language,
+            onTap: () => cubit(context).onTapLanguageButton(),
+            switcherButtons: [
+              SwitcherButtonWidget(
+                selected: state.englishLanguageSelected,
+                title: LocaleKeys.english.tr(),
+                onTap: () {
+                  cubit(context).onLanguageSelected(UserLanguage.en);
+                  context.setLocale(const Locale('en'));
+                },
+              ),
+              SwitcherButtonWidget(
+                selected: state.ukrainianLanguageSelected,
+                title: LocaleKeys.ukrainian.tr(),
+                onTap: () {
+                  cubit(context).onLanguageSelected(UserLanguage.uk);
+                  context.setLocale(const Locale('uk'));
+                },
+              ),
+            ],
+            buttonIsOpen: state.openLanguageButton,
+          ),
+          const SizedBox(height: 80),
+          OutlinedButtonWidget(
+            title: LocaleKeys.log_out.tr(),
+            icon: Icons.exit_to_app,
+            onTap: () => showTwoActionDialog(
+              context: context,
+              title: LocaleKeys.sure_about_log_out.tr(),
+              onConfirm: () async {
+                await cubit(context).onLogOut();
+                Beamer.of(context)
+                    .beamToReplacementNamed(AuthScreen.screenName);
+              },
+            ),
+          ),
+          const SizedBox(height: 50)
+        ],
+      ),
     );
   }
 
