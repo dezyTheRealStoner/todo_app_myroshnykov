@@ -4,6 +4,7 @@ part of 'profile_cubit.dart';
 class ProfileState extends Equatable {
   const ProfileState({
     this.user = mockedUser,
+    this.completedTodos = 0,
     this.updating = false,
     this.openThemeButton = false,
     this.openLanguageButton = false,
@@ -14,6 +15,7 @@ class ProfileState extends Equatable {
   });
 
   final User user;
+  final int completedTodos;
   final bool updating;
   final bool openThemeButton;
   final bool openLanguageButton;
@@ -24,6 +26,7 @@ class ProfileState extends Equatable {
 
   ProfileState copyWith({
     User? user,
+    int? completedTodos,
     bool? updating,
     bool? openThemeButton,
     bool? openLanguageButton,
@@ -34,6 +37,7 @@ class ProfileState extends Equatable {
   }) {
     return ProfileState(
       user: user ?? this.user,
+      completedTodos: completedTodos ?? this.completedTodos,
       updating: updating ?? this.updating,
       openThemeButton: openThemeButton ?? this.openThemeButton,
       openLanguageButton: openLanguageButton ?? this.openLanguageButton,
@@ -49,6 +53,7 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props => [
         user,
+        completedTodos,
         updating,
         openThemeButton,
         openLanguageButton,

@@ -30,19 +30,6 @@ class TodoDataSource {
     return todoSnapshot;
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getCompletedTodo({
-    required String id,
-    required bool completed,
-  }) async {
-    final todoSnapshot = await _profilesCollection
-        .doc(id)
-        .collection(todosCollectionName)
-        .where(FieldPath.fromString('completed'), isEqualTo: true)
-        .get();
-
-    return todoSnapshot;
-  }
-
   Future<void> updateTodoData({
     required String todoId,
     required String title,

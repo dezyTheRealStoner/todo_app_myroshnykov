@@ -31,8 +31,8 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
 
   @override
   void initParams(BuildContext context) {
-    if (getTodoFromBeamerState(context) != null) {
-      final todo = getTodoFromBeamerState(context);
+    if (getTodoFromBeamer(context) != null) {
+      final todo = getTodoFromBeamer(context);
       cubit(context).initDataForUpdate(todo!);
     }
 

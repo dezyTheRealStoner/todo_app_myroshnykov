@@ -1,13 +1,12 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
-import 'package:todo_app_myroshnykov/src/presentation/dialogs/two_action_dialog.dart';
-import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/action_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
-import 'package:todo_app_myroshnykov/src/presentation/widgets/todo_card_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/screen_title_widget.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/todo_list_widget.dart';
 
 class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,77 +29,34 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 20),
-        _buildTitle(),
-        const SizedBox(height: 20),
-        _buildProgress(),
-        const SizedBox(height: 20),
-        _buildList(context),
-        const SizedBox(height: 20),
-        _buildAddButton(context),
-        const SizedBox(height: 20),
-      ],
+    return Center(
+      child: Column(
+        children: [
+          ScreenTitleWidget(
+            title: LocaleKeys.your_coming_todos.tr(),
+          ),
+          const SizedBox(height: 20),
+          _buildList(context),
+          const SizedBox(height: 20),
+          ActionButtonWidget(title: LocaleKeys.add_todo.tr()),
+          const SizedBox(height: 20),
+        ],
+      ),
     );
-  }
-
-  Widget _buildTitle() {
-    return Text(LocaleKeys.your_coming_todos.tr());
-  }
-
-  Widget _buildProgress() {
-    return Container();
   }
 
   Widget _buildList(BuildContext context) {
     return observeState(
-      builder: (context, state) => Expanded(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          padding: const EdgeInsets.symmetric(vertical: 3),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(width: 1),
-          ),
-          child: state.updating
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : ListView.builder(
-                  itemCount: state.todoList.length,
-                  itemBuilder: (context, index) => TodoCardWidget(
-                    todo: state.todoList.elementAt(index),
-                    onRemove: () => showTwoActionDialog(
-                      context: context,
-                      title: LocaleKeys.sure_want_delete.tr(),
-                      onConfirm: () async {
-                        await cubit(context)
-                            .onRemoveTodo(state.todoList.elementAt(index).id);
-                        Navigator.pop(context);
-                        await Future.delayed(const Duration(seconds: 1));
-                        await cubit(context).getAllUserTodos();
-                      },
-                    ),
-                  ),
-                ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddButton(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-      ),
-      onPressed: () => Beamer.of(context).beamToNamed(TodoScreen.screenName),
-      child: Text(
-        LocaleKeys.add_todo.tr(),
+      builder: (context, state) => TodoListWidget(
+        updating: state.updating,
+        listLength: state.todoList.length,
+        todoList: state.todoList,
+        onRemoveConfirm: (index) async {
+          await cubit(context).onRemoveTodo(state.todoList.elementAt(index).id);
+          Navigator.pop(context);
+          await Future.delayed(const Duration(seconds: 1));
+          await cubit(context).getAllUserTodos();
+        },
       ),
     );
   }
