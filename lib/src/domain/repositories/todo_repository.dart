@@ -9,11 +9,9 @@ abstract class TodoRepository {
 
   Future<void> updateTodo(UpdateTodoParams params);
 
-  Future<void> changeTodoCompleteStatus(String id);
-
   Future<Todo> getTodo(String id);
 
-  Future<List<Todo>> getAllUserTodos(List<dynamic> todoIds);
+  Future<List<Todo>> getAllUserTodos();
 
-  Future<List<Todo>> getCompletedTodos(List<dynamic> todoIds);
+  Future<List<Todo>> getActualTodos();
 }

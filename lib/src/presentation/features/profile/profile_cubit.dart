@@ -7,6 +7,7 @@ import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_la
 import 'package:todo_app_myroshnykov/src/domain/entities/personalization/user_theme.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/user/user.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/auth/log_out_interactor.dart';
+import 'package:todo_app_myroshnykov/src/domain/interactors/todo/get_all_user_todos_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/user/get_user_info_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/user/update_user_info_interactor.dart';
 import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
@@ -19,12 +20,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     this._logOutInteractor,
     this._updateUserInfoInteractor,
     this._getUserInfoInteractor,
+    this._getAllUserTodosInteractor,
     this._appPreferencesCubit,
   ) : super(const ProfileState());
 
   final LogOutInteractor _logOutInteractor;
   final UpdateUserInfoInteractor _updateUserInfoInteractor;
   final GetUserInfoInteractor _getUserInfoInteractor;
+  final GetAllUserTodosInteractor _getAllUserTodosInteractor;
   final AppPreferencesCubit _appPreferencesCubit;
 
   final logger = getLogger('ProfileCubit');
@@ -35,7 +38,20 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       final user = await _getUserInfoInteractor.call();
 
-      emit(state.copyWith(user: user));
+      final todos = await _getAllUserTodosInteractor.call();
+
+      int completedTodos = 0;
+
+      for (var todo in todos) {
+        if (todo.completed) {
+          completedTodos++;
+        }
+      }
+
+      emit(state.copyWith(
+        user: user,
+        completedTodos: completedTodos,
+      ));
 
       setTheme(user.theme);
       setLanguage(user.language);

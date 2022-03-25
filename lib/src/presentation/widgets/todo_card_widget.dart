@@ -77,7 +77,7 @@ class TodoCardWidget extends StatelessWidget {
                   Row(
                     children: [
                       IconButtonWidget(
-                        icon: Icons.check,
+                        icon: todo.completed ? Icons.repeat_sharp : Icons.check,
                         color: Colors.green,
                         onTap: () {},
                       ),
