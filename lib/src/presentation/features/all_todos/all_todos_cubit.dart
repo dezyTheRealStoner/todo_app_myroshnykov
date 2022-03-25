@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/todo/get_all_user_todos_interactor.dart';
-import 'package:todo_app_myroshnykov/src/domain/interactors/user/get_user_info_interactor.dart';
 import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 part 'all_todos_state.dart';
@@ -13,7 +12,7 @@ part 'all_todos_state.dart';
 class AllTodosCubit extends Cubit<AllTodosState> {
   AllTodosCubit(
     this._getAllUserTodosInteractor,
-  ) : super(const AllTodosState());
+  ) : super(AllTodosState());
 
   final GetAllUserTodosInteractor _getAllUserTodosInteractor;
 
@@ -66,5 +65,9 @@ class AllTodosCubit extends Cubit<AllTodosState> {
       completedTodosOpened: false,
       uncompletedTodosOpened: true,
     ));
+  }
+
+  void onDateSelected(DateTime selectedDate) {
+    emit(state.copyWith(selectedDay: selectedDate));
   }
 }

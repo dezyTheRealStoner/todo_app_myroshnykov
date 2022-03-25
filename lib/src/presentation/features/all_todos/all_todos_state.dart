@@ -2,7 +2,7 @@ part of 'all_todos_cubit.dart';
 
 @immutable
 class AllTodosState extends Equatable {
-  const AllTodosState({
+  AllTodosState({
     this.updating = false,
     this.allTodosOpened = true,
     this.completedTodosOpened = false,
@@ -10,7 +10,8 @@ class AllTodosState extends Equatable {
     this.allTodos = const [],
     this.completedTodos = const [],
     this.uncompletedTodos = const [],
-  });
+    DateTime? selectedDay,
+  }) : selectedDay = selectedDay ?? DateTime.now();
 
   final bool updating;
 
@@ -22,6 +23,8 @@ class AllTodosState extends Equatable {
   final List<Todo> completedTodos;
   final List<Todo> uncompletedTodos;
 
+  final DateTime selectedDay;
+
   AllTodosState copyWith({
     bool? updating,
     bool? allTodosOpened,
@@ -30,6 +33,7 @@ class AllTodosState extends Equatable {
     List<Todo>? allTodos,
     List<Todo>? completedTodos,
     List<Todo>? uncompletedTodos,
+    DateTime? selectedDay,
   }) {
     return AllTodosState(
       updating: updating ?? this.updating,
@@ -40,6 +44,7 @@ class AllTodosState extends Equatable {
       allTodos: allTodos ?? this.allTodos,
       completedTodos: completedTodos ?? this.completedTodos,
       uncompletedTodos: uncompletedTodos ?? this.uncompletedTodos,
+      selectedDay: selectedDay ?? this.selectedDay,
     );
   }
 
@@ -52,5 +57,6 @@ class AllTodosState extends Equatable {
         allTodos,
         completedTodos,
         uncompletedTodos,
+        selectedDay,
       ];
 }

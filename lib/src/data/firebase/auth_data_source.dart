@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:todo_app_myroshnykov/src/data/firebase/profile_data_source.dart';
 import 'package:todo_app_myroshnykov/src//logger/custom_logger.dart';
@@ -39,7 +38,6 @@ class AuthDataSource {
       email: email,
       name: name,
       image: _defaultImage,
-      completedTodos: 0,
       todoIds: [],
       theme: 'dark',
       language: 'en',
