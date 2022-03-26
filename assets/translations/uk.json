@@ -52,5 +52,7 @@
   "sure_want_delete": "Ви впевнені що хочете видалити цей запис?",
   "completed": "Виконані",
   "uncompleted": "Невиконані",
-  "all": "Усі"
+  "all": "Усі",
+  "moved_to_completed": "Переіщено у виконані",
+  "moved_to_uncompleted": "Переміщено у невиконані"
 }

@@ -1,9 +1,13 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
+import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/all_todos/all_todos_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/action_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/screen_title_widget.dart';
@@ -34,6 +38,27 @@ class _AllTodosScreenState
       }
     }
     return hasDateTodo;
+  }
+
+  List<Todo> getTodosForSelectedDay({required AllTodosState state}) {
+    return state.allTodos
+        .where((todo) =>
+            todo.dateTime.year == state.selectedDay.year &&
+            todo.dateTime.month == state.selectedDay.month &&
+            todo.dateTime.day == state.selectedDay.day)
+        .toList();
+  }
+
+  void _navigateToTodoScreen(
+      {required BuildContext context,
+      required List<Todo> todoList,
+      required int index}) {
+    Beamer.of(context).beamToNamed(
+      TodoScreen.screenName,
+      data: <String, dynamic>{
+        'todo': todoList.elementAt(index).toMap(),
+      },
+    );
   }
 
   @override
@@ -122,29 +147,52 @@ class _AllTodosScreenState
     );
   }
 
+  final logger = getLogger('alltodos');
+
   Widget _buildTodos(BuildContext context) {
     return observeState(builder: (context, state) {
       if (state.allTodosOpened) {
-        return _buildCalendar(context, state);
+        return Column(
+          children: [
+            _buildCalendar(context, state),
+            _buildCalendarTodoList(
+              context: context,
+              todoList: getTodosForSelectedDay(state: state),
+            ),
+          ],
+        );
       } else if (state.completedTodosOpened) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.55,
           child: TodoListWidget(
-            updating: state.updating,
-            listLength: state.completedTodos.length,
-            todoList: state.completedTodos,
-            onRemoveConfirm: (index) {},
-          ),
+              updating: state.updating,
+              listLength: state.completedTodos.length,
+              todoList: state.completedTodos,
+              onChangeCompleteStatus: (index) => cubit(context)
+                  .onChangeCompleteStatus(
+                      state.completedTodos.elementAt(index).id),
+              onRemoveConfirm: (index) async {
+                await cubit(context)
+                    .onRemoveTodo(state.completedTodos.elementAt(index).id);
+                Navigator.pop(context);
+              }),
         );
       } else if (state.uncompletedTodosOpened) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.55,
           child: TodoListWidget(
-            updating: state.updating,
-            listLength: state.uncompletedTodos.length,
-            todoList: state.uncompletedTodos,
-            onRemoveConfirm: (index) {},
-          ),
+              updating: state.updating,
+              listLength: state.uncompletedTodos.length,
+              todoList: state.uncompletedTodos,
+              onChangeCompleteStatus: (index) =>
+                  cubit(context).onChangeCompleteStatus(
+                    state.uncompletedTodos.elementAt(index).id,
+                  ),
+              onRemoveConfirm: (index) async {
+                await cubit(context)
+                    .onRemoveTodo(state.uncompletedTodos.elementAt(index).id);
+                Navigator.pop(context);
+              }),
         );
       } else {
         return const SizedBox();
@@ -256,8 +304,7 @@ class _AllTodosScreenState
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.surface),
                 ),
-                const SizedBox(height: 5),
-                const SizedBox(height: 10)
+                const SizedBox(height: 15),
               ],
             ),
           );
@@ -291,6 +338,55 @@ class _AllTodosScreenState
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Theme.of(context).colorScheme.error,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCalendarTodoList({
+    required BuildContext context,
+    required List<Todo> todoList,
+  }) {
+    return AnimatedCrossFade(
+      crossFadeState: todoList.isEmpty
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+      duration: const Duration(milliseconds: 600),
+      firstChild: SizedBox(width: MediaQuery.of(context).size.width),
+      secondChild: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+        shrinkWrap: true,
+        itemCount: todoList.length,
+        itemBuilder: (context, index) => Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                  onTap: () => _navigateToTodoScreen(
+                        context: context,
+                        todoList: todoList,
+                        index: index,
+                      ),
+                  child: Text(todoList.elementAt(index).title)),
+              GestureDetector(
+                onTap: () => _navigateToTodoScreen(
+                  context: context,
+                  todoList: todoList,
+                  index: index,
+                ),
+                child: Text(
+                  DateFormat.Hm().format(todoList.elementAt(index).dateTime),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
