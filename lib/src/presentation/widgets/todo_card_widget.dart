@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
+import 'package:todo_app_myroshnykov/src/presentation/widgets/hold_progress_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
 
 class TodoCardWidget extends StatelessWidget {
   const TodoCardWidget({
     Key? key,
     required this.todo,
+    required this.onChangeCompleteStatus,
     required this.onRemove,
   }) : super(key: key);
 
   final Todo todo;
+  final VoidCallback onChangeCompleteStatus;
   final VoidCallback onRemove;
 
   void _navigateToTodoScreen(BuildContext context) {
@@ -75,11 +78,12 @@ class TodoCardWidget extends StatelessWidget {
                     ),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButtonWidget(
-                        icon: todo.completed ? Icons.repeat_sharp : Icons.check,
-                        color: Colors.green,
-                        onTap: () {},
+                      const SizedBox(width: 20),
+                      HoldProgressButtonWidget(
+                        onChangeCompleteStatus: () => onChangeCompleteStatus(),
+                        completed: todo.completed,
                       ),
                       IconButtonWidget(
                         icon: Icons.delete_forever,

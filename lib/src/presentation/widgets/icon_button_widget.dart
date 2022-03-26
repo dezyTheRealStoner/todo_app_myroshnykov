@@ -21,12 +21,12 @@ class IconButtonWidget extends StatelessWidget {
       child: Icon(
         icon,
         color: color,
-        size: 25,
+        size: 30,
       ),
       padding: const EdgeInsets.all(10.0),
       shape: CircleBorder(
         side: BorderSide(
-          width: 1.0,
+          width: 4.0,
           style: BorderStyle.solid,
           color: color,
         ),

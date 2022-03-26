@@ -7,6 +7,8 @@ abstract class TodoRepository {
 
   Future<void> removeTodo(String id);
 
+  Future<void> changeCompleteStatus(String id);
+
   Future<void> updateTodo(UpdateTodoParams params);
 
   Future<Todo> getTodo(String id);

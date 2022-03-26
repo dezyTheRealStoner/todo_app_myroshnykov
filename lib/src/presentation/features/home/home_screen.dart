@@ -54,12 +54,12 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
           updating: state.updating,
           listLength: state.todoList.length,
           todoList: state.todoList,
+          onChangeCompleteStatus: (index) => cubit(context)
+              .onChangeCompleteStatus(state.todoList.elementAt(index).id),
           onRemoveConfirm: (index) async {
             await cubit(context)
                 .onRemoveTodo(state.todoList.elementAt(index).id);
             Navigator.pop(context);
-            await Future.delayed(const Duration(seconds: 1));
-            await cubit(context).getAllUserTodos();
           },
         ),
       ),

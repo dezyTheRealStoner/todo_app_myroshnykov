@@ -82,6 +82,26 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<void> changeCompleteStatus(String id) async {
+    try {
+      final todoSnapshot = await _todoDataSource.getTodo(todoId: id);
+
+      final todo = TodoMapper().fromDocument(todoSnapshot);
+
+      await _todoDataSource.updateTodoData(
+        todoId: id,
+        title: todo.title,
+        description: todo.description,
+        todoType: todo.todoType,
+        dateTime: todo.dateTime,
+        completed: !todo.completed,
+      );
+    } on Exception catch (error) {
+      logger.e(error);
+    }
+  }
+
+  @override
   Future<void> updateTodo(UpdateTodoParams params) async {
     try {
       await _todoDataSource.updateTodoData(
