@@ -7,6 +7,7 @@ import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dar
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/dialogs/two_action_dialog.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/utils/all_todo_screen_state_params.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/beamer_state_utils.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
@@ -36,6 +37,12 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
       cubit(context).initDataForUpdate(todo!);
     }
 
+    if (getAllTodoScreenStateParamsFromBeamer(context) != null) {
+      final allTodoScreenStateParams =
+          getAllTodoScreenStateParamsFromBeamer(context);
+      cubit(context).setBackParams(allTodoScreenStateParams!);
+    }
+
     final state = cubit(context).state;
 
     _titleController
@@ -52,7 +59,34 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
   }
 
   void _navigateBack() {
-    Beamer.of(context).beamBack(data: <String, dynamic>{});
+    if (cubit(context).state.backTodAllTodos ||
+        cubit(context).state.backToCompletedTodos ||
+        cubit(context).state.backToUncompletedTodos) {
+      AllTodoScreenStateToBack allTodoScreenStateToBack() {
+        if (cubit(context).state.backTodAllTodos) {
+          logger.i('all');
+          return AllTodoScreenStateToBack.all;
+        } else if (cubit(context).state.backToCompletedTodos) {
+          logger.i('completed');
+          return AllTodoScreenStateToBack.completed;
+        } else {
+          return AllTodoScreenStateToBack.uncompleted;
+        }
+      }
+
+      final allTodoScreenStateParams = AllTodoScreenStateParams(
+        allTodoScreenStateToBack: allTodoScreenStateToBack(),
+        dateTime: cubit(context).state.dateTime,
+      );
+
+      logger.i('hi');
+
+      Beamer.of(context).beamBack(data: <String, dynamic>{
+        'allTodoScreenStateParams': allTodoScreenStateParams.toMap(),
+      });
+    } else {
+      Beamer.of(context).beamBack(data: <String, dynamic>{});
+    }
   }
 
   @override

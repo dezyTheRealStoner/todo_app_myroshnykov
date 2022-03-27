@@ -9,6 +9,7 @@ import 'package:todo_app_myroshnykov/src/domain/interactors/todo/add_todo_intera
 import 'package:todo_app_myroshnykov/src//logger/custom_logger.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/todo/remove_todo_interactor.dart';
 import 'package:todo_app_myroshnykov/src/domain/interactors/todo/update_todo_interactor.dart';
+import 'package:todo_app_myroshnykov/src/presentation/utils/all_todo_screen_state_params.dart';
 
 part 'todo_state.dart';
 
@@ -50,6 +51,26 @@ class TodoCubit extends Cubit<TodoState> {
     checkAllFieldFilled();
   }
 
+  void onCompleteTapped() {
+    state.completed
+        ? emit(state.copyWith(completed: false))
+        : emit(state.copyWith(completed: true));
+
+    checkAllFieldFilled();
+  }
+
+  void setBackParams(AllTodoScreenStateParams params) {
+    if (params.allTodoScreenStateToBack == AllTodoScreenStateToBack.all) {
+      emit(state.copyWith(backTodAllTodos: true));
+    } else if (params.allTodoScreenStateToBack ==
+        AllTodoScreenStateToBack.completed) {
+      emit(state.copyWith(backToCompletedTodos: true));
+    } else if (params.allTodoScreenStateToBack ==
+        AllTodoScreenStateToBack.uncompleted) {
+      emit(state.copyWith(backToUncompletedTodos: true));
+    }
+  }
+
   Future<void> initDataForUpdate(Todo todo) async {
     emit(state.copyWith(
       id: todo.id,
@@ -59,14 +80,6 @@ class TodoCubit extends Cubit<TodoState> {
       completed: todo.completed,
       todoInfoUpdating: true,
     ));
-  }
-
-  void onCompleteTapped() {
-    state.completed
-        ? emit(state.copyWith(completed: false))
-        : emit(state.copyWith(completed: true));
-
-    checkAllFieldFilled();
   }
 
   Future<void> onDelete() async {

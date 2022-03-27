@@ -8,6 +8,8 @@ import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_state.dar
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/all_todos/all_todos_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
+import 'package:todo_app_myroshnykov/src/presentation/utils/all_todo_screen_state_params.dart';
+import 'package:todo_app_myroshnykov/src/presentation/utils/beamer_state_utils.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/action_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/screen_title_widget.dart';
@@ -49,14 +51,33 @@ class _AllTodosScreenState
         .toList();
   }
 
-  void _navigateToTodoScreen(
-      {required BuildContext context,
-      required List<Todo> todoList,
-      required int index}) {
+  void _navigateToTodoScreen({
+    required BuildContext context,
+    required List<Todo> todoList,
+    required int index,
+  }) {
+    AllTodoScreenStateToBack allTodoScreenState() {
+      if (cubit(context).state.allTodosOpened) {
+        return AllTodoScreenStateToBack.all;
+      } else if (cubit(context).state.completedTodosOpened) {
+        return AllTodoScreenStateToBack.completed;
+      } else {
+        return AllTodoScreenStateToBack.uncompleted;
+      }
+    }
+
+    final allTodoScreenStateParams = AllTodoScreenStateParams(
+      allTodoScreenStateToBack: allTodoScreenState(),
+      dateTime: cubit(context).state.selectedDay,
+    );
+
+    logger.i(allTodoScreenStateParams);
+
     Beamer.of(context).beamToNamed(
       TodoScreen.screenName,
       data: <String, dynamic>{
         'todo': todoList.elementAt(index).toMap(),
+        'allTodoScreenStateParams': allTodoScreenStateParams.toMap(),
       },
     );
   }
@@ -64,6 +85,27 @@ class _AllTodosScreenState
   @override
   void initParams(BuildContext context) {
     cubit(context).initData();
+
+    if (getAllTodoScreenStateParamsFromBeamer(context) != null) {
+      logger.i('hi');
+
+      final allTodoScreenStateParams =
+          getAllTodoScreenStateParamsFromBeamer(context);
+      if (allTodoScreenStateParams!.allTodoScreenStateToBack ==
+          AllTodoScreenStateToBack.all) {
+        cubit(context).onAllTodosOpened();
+      } else if (allTodoScreenStateParams.allTodoScreenStateToBack ==
+              AllTodoScreenStateToBack.completed &&
+          !cubit(context).state.allTodosOpened) {
+        cubit(context).onCompletedTodosOpened();
+      } else if (allTodoScreenStateParams.allTodoScreenStateToBack ==
+              AllTodoScreenStateToBack.uncompleted &&
+          !cubit(context).state.allTodosOpened) {
+        cubit(context).onUncompletedTodosOpened();
+      }
+    } else {
+      cubit(context).onAllTodosOpened();
+    }
   }
 
   @override
@@ -168,6 +210,11 @@ class _AllTodosScreenState
               updating: state.updating,
               listLength: state.completedTodos.length,
               todoList: state.completedTodos,
+              navigateToTodoScreen: (index) => _navigateToTodoScreen(
+                    context: context,
+                    todoList: state.completedTodos,
+                    index: index,
+                  ),
               onChangeCompleteStatus: (index) => cubit(context)
                   .onChangeCompleteStatus(
                       state.completedTodos.elementAt(index).id),
@@ -184,6 +231,11 @@ class _AllTodosScreenState
               updating: state.updating,
               listLength: state.uncompletedTodos.length,
               todoList: state.uncompletedTodos,
+              navigateToTodoScreen: (index) => _navigateToTodoScreen(
+                    context: context,
+                    todoList: state.completedTodos,
+                    index: index,
+                  ),
               onChangeCompleteStatus: (index) =>
                   cubit(context).onChangeCompleteStatus(
                     state.uncompletedTodos.elementAt(index).id,

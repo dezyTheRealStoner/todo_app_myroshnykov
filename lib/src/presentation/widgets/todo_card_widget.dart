@@ -13,20 +13,13 @@ class TodoCardWidget extends StatelessWidget {
     required this.todo,
     required this.onChangeCompleteStatus,
     required this.onRemove,
+    required this.navigateToTodoScreen,
   }) : super(key: key);
 
   final Todo todo;
   final VoidCallback onChangeCompleteStatus;
   final VoidCallback onRemove;
-
-  void _navigateToTodoScreen(BuildContext context) {
-    Beamer.of(context).beamToNamed(
-      TodoScreen.screenName,
-      data: <String, dynamic>{
-        'todo': todo.toMap(),
-      },
-    );
-  }
+  final VoidCallback navigateToTodoScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +33,7 @@ class TodoCardWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: GestureDetector(
-                  onTap: () => _navigateToTodoScreen(context),
+                  onTap: navigateToTodoScreen,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -67,7 +60,7 @@ class TodoCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () => _navigateToTodoScreen(context),
+                    onTap: navigateToTodoScreen,
                     child: Column(
                       children: [
                         Text(
