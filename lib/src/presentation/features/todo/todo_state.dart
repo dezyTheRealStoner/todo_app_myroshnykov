@@ -11,6 +11,9 @@ class TodoState extends Equatable {
     this.completed = false,
     this.todoInfoUpdating = false,
     this.showDeleteDialog = false,
+    this.backTodAllTodos = false,
+    this.backToCompletedTodos = false,
+    this.backToUncompletedTodos = false,
     this.allFieldsFilled = false,
     this.progress = false,
   }) : dateTime = dateTime ?? DateTime.now();
@@ -25,6 +28,10 @@ class TodoState extends Equatable {
   final bool todoInfoUpdating;
   final bool showDeleteDialog;
 
+  final bool backTodAllTodos;
+  final bool backToCompletedTodos;
+  final bool backToUncompletedTodos;
+
   final bool allFieldsFilled;
   final bool progress;
 
@@ -38,6 +45,9 @@ class TodoState extends Equatable {
     bool? allFieldsFilled,
     bool? completeTapped,
     bool? showDeleteDialog,
+    bool? backTodAllTodos,
+    bool? backToCompletedTodos,
+    bool? backToUncompletedTodos,
     bool? progress,
     bool? completed,
   }) {
@@ -50,6 +60,10 @@ class TodoState extends Equatable {
       todoInfoUpdating: todoInfoUpdating ?? this.todoInfoUpdating,
       allFieldsFilled: allFieldsFilled ?? this.allFieldsFilled,
       showDeleteDialog: showDeleteDialog ?? this.showDeleteDialog,
+      backTodAllTodos: backTodAllTodos ?? this.backTodAllTodos,
+      backToCompletedTodos: backToCompletedTodos ?? this.backToCompletedTodos,
+      backToUncompletedTodos:
+          backToUncompletedTodos ?? this.backToUncompletedTodos,
       progress: progress ?? this.progress,
       completed: completed ?? this.completed,
     );
@@ -65,6 +79,9 @@ class TodoState extends Equatable {
         completed,
         todoInfoUpdating,
         showDeleteDialog,
+        backTodAllTodos,
+        backToCompletedTodos,
+        backToUncompletedTodos,
         allFieldsFilled,
         progress,
       ];

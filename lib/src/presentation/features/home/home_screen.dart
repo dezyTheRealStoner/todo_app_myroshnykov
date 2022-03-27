@@ -1,8 +1,10 @@
+import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/cubit/cubit_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/home/home_cubit.dart';
+import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/action_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/bottom_navigation_bar_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/screen_title_widget.dart';
@@ -54,6 +56,10 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
           updating: state.updating,
           listLength: state.todoList.length,
           todoList: state.todoList,
+          navigateToTodoScreen: (index) =>
+              Beamer.of(context).beamToNamed(TodoScreen.screenName, data: {
+            'todo': state.todoList.elementAt(index).toMap(),
+          }),
           onChangeCompleteStatus: (index) => cubit(context)
               .onChangeCompleteStatus(state.todoList.elementAt(index).id),
           onRemoveConfirm: (index) async {

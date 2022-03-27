@@ -4,7 +4,7 @@ part of 'all_todos_cubit.dart';
 class AllTodosState extends Equatable {
   AllTodosState({
     this.updating = false,
-    this.allTodosOpened = true,
+    this.allTodosOpened = false,
     this.completedTodosOpened = false,
     this.uncompletedTodosOpened = false,
     this.allTodos = const [],

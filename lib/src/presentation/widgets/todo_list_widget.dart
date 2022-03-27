@@ -14,6 +14,7 @@ class TodoListWidget extends StatelessWidget {
     required this.todoList,
     required this.onRemoveConfirm,
     required this.onChangeCompleteStatus,
+    required this.navigateToTodoScreen,
   }) : super(key: key);
 
   final bool updating;
@@ -21,6 +22,7 @@ class TodoListWidget extends StatelessWidget {
   final List<Todo> todoList;
   final Function(int) onRemoveConfirm;
   final Function(int) onChangeCompleteStatus;
+  final Function(int) navigateToTodoScreen;
 
   final logger = getLogger('todolist');
 
@@ -43,6 +45,7 @@ class TodoListWidget extends StatelessWidget {
               itemBuilder: (context, index) => TodoCardWidget(
                 todo: todoList.elementAt(index),
                 onChangeCompleteStatus: () => onChangeCompleteStatus(index),
+                navigateToTodoScreen: () => navigateToTodoScreen(index),
                 onRemove: () => showTwoActionDialog(
                   context: context,
                   title: LocaleKeys.sure_want_delete.tr(),
