@@ -1,7 +1,5 @@
 import 'package:beamer/beamer.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app_myroshnykov/src/presentation/base/localization/locale_keys.g.dart';
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
 
 class ActionButtonWidget extends StatelessWidget {

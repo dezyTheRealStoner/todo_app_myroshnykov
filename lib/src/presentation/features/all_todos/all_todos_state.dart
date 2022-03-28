@@ -7,22 +7,27 @@ class AllTodosState extends Equatable {
     this.allTodosOpened = false,
     this.completedTodosOpened = false,
     this.uncompletedTodosOpened = false,
+    this.dateWasSelected = false,
     this.allTodos = const [],
     this.completedTodos = const [],
     this.uncompletedTodos = const [],
+    DateTime? startDateTime,
     DateTime? selectedDay,
-  }) : selectedDay = selectedDay ?? DateTime.now();
+  })  : startDateTime = startDateTime ?? DateTime.now(),
+        selectedDay = selectedDay ?? DateTime.now();
 
   final bool updating;
 
   final bool allTodosOpened;
   final bool completedTodosOpened;
   final bool uncompletedTodosOpened;
+  final bool dateWasSelected;
 
   final List<Todo> allTodos;
   final List<Todo> completedTodos;
   final List<Todo> uncompletedTodos;
 
+  final DateTime startDateTime;
   final DateTime selectedDay;
 
   AllTodosState copyWith({
@@ -30,9 +35,11 @@ class AllTodosState extends Equatable {
     bool? allTodosOpened,
     bool? completedTodosOpened,
     bool? uncompletedTodosOpened,
+    bool? dateWasSelected,
     List<Todo>? allTodos,
     List<Todo>? completedTodos,
     List<Todo>? uncompletedTodos,
+    DateTime? startDateTime,
     DateTime? selectedDay,
   }) {
     return AllTodosState(
@@ -41,9 +48,11 @@ class AllTodosState extends Equatable {
       completedTodosOpened: completedTodosOpened ?? this.completedTodosOpened,
       uncompletedTodosOpened:
           uncompletedTodosOpened ?? this.uncompletedTodosOpened,
+      dateWasSelected: dateWasSelected ?? this.dateWasSelected,
       allTodos: allTodos ?? this.allTodos,
       completedTodos: completedTodos ?? this.completedTodos,
       uncompletedTodos: uncompletedTodos ?? this.uncompletedTodos,
+      startDateTime: startDateTime ?? this.startDateTime,
       selectedDay: selectedDay ?? this.selectedDay,
     );
   }
@@ -54,9 +63,11 @@ class AllTodosState extends Equatable {
         allTodosOpened,
         completedTodosOpened,
         uncompletedTodosOpened,
+        dateWasSelected,
         allTodos,
         completedTodos,
         uncompletedTodos,
+        startDateTime,
         selectedDay,
       ];
 }

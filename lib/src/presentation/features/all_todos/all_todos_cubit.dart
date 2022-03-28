@@ -48,8 +48,14 @@ class AllTodosCubit extends Cubit<AllTodosState> {
     ));
   }
 
+  void setStartDateTime(DateTime startDateTime) {
+    emit(state.copyWith(startDateTime: startDateTime));
+    logger.i(
+        'date was selected: ${state.dateWasSelected} : ${state.startDateTime}');
+  }
+
   void onDateSelected(DateTime selectedDate) {
-    emit(state.copyWith(selectedDay: selectedDate));
+    emit(state.copyWith(dateWasSelected: true, selectedDay: selectedDate));
   }
 
   Future<void> initData() async {
