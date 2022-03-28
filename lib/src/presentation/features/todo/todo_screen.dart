@@ -219,7 +219,7 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '${LocaleKeys.date.tr()} ${state.dateTime.day} ${numToMonth(state.dateTime.month)} ${state.dateTime.year}',
+          DateFormat.yMMMd().format(state.dateTime),
         ),
         const SizedBox(height: 10),
         Text(DateFormat.Hm().format(state.dateTime)),

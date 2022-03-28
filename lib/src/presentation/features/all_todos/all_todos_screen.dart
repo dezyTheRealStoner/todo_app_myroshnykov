@@ -43,12 +43,19 @@ class _AllTodosScreenState
   }
 
   List<Todo> getTodosForSelectedDay({required AllTodosState state}) {
-    return state.allTodos
-        .where((todo) =>
-            todo.dateTime.year == state.selectedDay.year &&
-            todo.dateTime.month == state.selectedDay.month &&
-            todo.dateTime.day == state.selectedDay.day)
-        .toList();
+    return state.dateWasSelected
+        ? state.allTodos
+            .where((todo) =>
+                todo.dateTime.year == state.selectedDay.year &&
+                todo.dateTime.month == state.selectedDay.month &&
+                todo.dateTime.day == state.selectedDay.day)
+            .toList()
+        : state.allTodos
+            .where((todo) =>
+                todo.dateTime.year == state.startDateTime.year &&
+                todo.dateTime.month == state.startDateTime.month &&
+                todo.dateTime.day == state.startDateTime.day)
+            .toList();
   }
 
   void _navigateToTodoScreen({
@@ -94,6 +101,7 @@ class _AllTodosScreenState
       if (allTodoScreenStateParams!.allTodoScreenStateToBack ==
           AllTodoScreenStateToBack.all) {
         cubit(context).onAllTodosOpened();
+        cubit(context).setStartDateTime(allTodoScreenStateParams.dateTime);
       } else if (allTodoScreenStateParams.allTodoScreenStateToBack ==
               AllTodoScreenStateToBack.completed &&
           !cubit(context).state.allTodosOpened) {
@@ -200,6 +208,7 @@ class _AllTodosScreenState
             _buildCalendarTodoList(
               context: context,
               todoList: getTodosForSelectedDay(state: state),
+              state: state,
             ),
           ],
         );
@@ -266,12 +275,12 @@ class _AllTodosScreenState
       calendarFormat: CalendarFormat.month,
       startingDayOfWeek: StartingDayOfWeek.monday,
       selectedDayPredicate: (DateTime date) {
-        return isSameDay(state.selectedDay, date);
+        return state.dateWasSelected
+            ? isSameDay(state.selectedDay, date)
+            : isSameDay(state.startDateTime, date);
       },
       onDaySelected: (DateTime selectDay, DateTime focusDay) {
-        setState(() {
-          cubit(context).onDateSelected(selectDay);
-        });
+        cubit(context).onDateSelected(selectDay);
       },
       headerStyle: const HeaderStyle(
         titleCentered: true,
@@ -398,49 +407,62 @@ class _AllTodosScreenState
   Widget _buildCalendarTodoList({
     required BuildContext context,
     required List<Todo> todoList,
+    required AllTodosState state,
   }) {
-    return AnimatedCrossFade(
-      crossFadeState: todoList.isEmpty
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-      duration: const Duration(milliseconds: 600),
-      firstChild: SizedBox(width: MediaQuery.of(context).size.width),
-      secondChild: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
-        shrinkWrap: true,
-        itemCount: todoList.length,
-        itemBuilder: (context, index) => Container(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                  onTap: () => _navigateToTodoScreen(
-                        context: context,
-                        todoList: todoList,
-                        index: index,
-                      ),
-                  child: Text(todoList.elementAt(index).title)),
-              GestureDetector(
-                onTap: () => _navigateToTodoScreen(
-                  context: context,
-                  todoList: todoList,
-                  index: index,
-                ),
-                child: Text(
-                  DateFormat.Hm().format(todoList.elementAt(index).dateTime),
-                ),
-              ),
-            ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        Text(
+          DateFormat.yMMMd().format(
+            state.dateWasSelected ? state.selectedDay : state.startDateTime,
           ),
         ),
-      ),
+        AnimatedCrossFade(
+          crossFadeState: todoList.isEmpty
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: const Duration(milliseconds: 600),
+          firstChild: SizedBox(width: MediaQuery.of(context).size.width),
+          secondChild: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+            shrinkWrap: true,
+            itemCount: todoList.length,
+            itemBuilder: (context, index) => Container(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                      onTap: () => _navigateToTodoScreen(
+                            context: context,
+                            todoList: todoList,
+                            index: index,
+                          ),
+                      child: Text(todoList.elementAt(index).title)),
+                  GestureDetector(
+                    onTap: () => _navigateToTodoScreen(
+                      context: context,
+                      todoList: todoList,
+                      index: index,
+                    ),
+                    child: Text(
+                      DateFormat.Hm()
+                          .format(todoList.elementAt(index).dateTime),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
