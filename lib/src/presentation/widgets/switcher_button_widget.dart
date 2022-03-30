@@ -23,7 +23,12 @@ class SwitcherButtonWidget extends StatelessWidget {
         const SizedBox(width: 20),
         GestureDetector(
           onTap: onTap,
-          child: Text(title),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
       ],
     );

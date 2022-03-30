@@ -10,7 +10,7 @@ import 'package:todo_app_myroshnykov/src/logger/custom_logger.dart';
 
 part 'app_preferences_state.dart';
 
-@injectable
+@LazySingleton()
 class AppPreferencesCubit extends Cubit<AppPreferencesState> {
   AppPreferencesCubit(
     this._userIsLoggedInteractor,

@@ -21,7 +21,10 @@ class ActionButtonWidget extends StatelessWidget {
         ),
       ),
       onPressed: () => Beamer.of(context).beamToNamed(TodoScreen.screenName),
-      child: Text(title),
+      child: Text(
+        title,
+        style: TextStyle(color: Theme.of(context).colorScheme.background),
+      ),
     );
   }
 }

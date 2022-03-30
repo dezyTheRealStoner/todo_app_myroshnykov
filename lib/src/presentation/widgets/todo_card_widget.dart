@@ -1,9 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app_myroshnykov/src/domain/entities/todo/todo.dart';
-import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_screen.dart';
-import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/hold_progress_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
 
@@ -57,14 +54,13 @@ class TodoCardWidget extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
                     onTap: navigateToTodoScreen,
                     child: Column(
                       children: [
-                        Text(
-                            '${todo.dateTime.day} ${numToMonth(todo.dateTime.month)} ${todo.dateTime.year}'),
+                        Text(DateFormat.yMMMd().format(todo.dateTime)),
                         const SizedBox(height: 10),
                         Text(DateFormat.Hm().format(todo.dateTime)),
                       ],

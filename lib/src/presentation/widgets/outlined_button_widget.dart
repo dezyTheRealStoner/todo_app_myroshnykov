@@ -70,18 +70,29 @@ class OutlinedButtonWidget extends StatelessWidget {
               SizedBox(
                 height: 40,
                 width: 50,
-                child: Icon(icon),
+                child: Icon(
+                  icon,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
-              Text(title),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
               const Spacer(),
               withSwitchers
-                  ? Row(children: const [
-                      Icon(
-                        Icons.arrow_drop_down,
-                        size: 35,
-                      ),
-                      SizedBox(width: 10)
-                    ])
+                  ? Row(
+                      children: [
+                        Icon(
+                          Icons.arrow_drop_down,
+                          size: 35,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        const SizedBox(width: 10)
+                      ],
+                    )
                   : const SizedBox()
             ],
           ),

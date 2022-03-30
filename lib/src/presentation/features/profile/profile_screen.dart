@@ -26,6 +26,7 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
   Widget buildWidget(BuildContext context) {
     return observeState(
       builder: (context, state) => Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         bottomNavigationBar:
             const BottomNavigationBarWidget(currentTabIndex: 2),
         body: SafeArea(
@@ -83,7 +84,6 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
                 title: LocaleKeys.english.tr(),
                 onTap: () {
                   cubit(context).onLanguageSelected(UserLanguage.en);
-                  context.setLocale(const Locale('en'));
                 },
               ),
               SwitcherButtonWidget(
@@ -91,7 +91,6 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
                 title: LocaleKeys.ukrainian.tr(),
                 onTap: () {
                   cubit(context).onLanguageSelected(UserLanguage.uk);
-                  context.setLocale(const Locale('uk'));
                 },
               ),
             ],
@@ -134,12 +133,21 @@ class ProfileScreen extends CubitWidget<ProfileState, ProfileCubit> {
   }
 
   Widget _buildName(BuildContext context, ProfileState state) {
-    return Text(state.user.name);
+    return Text(
+      state.user.name,
+      style: TextStyle(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+    );
   }
 
   Widget _buildCompletedTodoText(BuildContext context, ProfileState state) {
-    final text = '${state.completedTodos}/${state.user.todoIds.length}';
+    final text =
+        '${LocaleKeys.completed_todos.tr()}: ${state.completedTodos}/${state.user.todoIds.length}';
 
-    return Text('${LocaleKeys.completed_todos.tr()}: $text');
+    return Text(
+      text,
+      style: TextStyle(color: Theme.of(context).colorScheme.primary),
+    );
   }
 }
