@@ -16,7 +16,9 @@ class ScreenTitleWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.headline2,
+        style: Theme.of(context).textTheme.headline2!.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
       ),
     );
   }

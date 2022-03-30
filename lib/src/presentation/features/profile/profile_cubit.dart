@@ -110,6 +110,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       await _updateUserInfoInteractor.call(state.user.copyWith(theme: theme));
       await _appPreferencesCubit.getUserInfo();
+      final user = await _getUserInfoInteractor.call();
+      emit(state.copyWith(user: user));
       setTheme(theme);
     } on Exception catch (error) {
       logger.e(error);
@@ -121,6 +123,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       await _updateUserInfoInteractor
           .call(state.user.copyWith(language: language));
       await _appPreferencesCubit.getUserInfo();
+      final user = await _getUserInfoInteractor.call();
+      emit(state.copyWith(user: user));
       setLanguage(language);
     } on Exception catch (error) {
       logger.e(error);

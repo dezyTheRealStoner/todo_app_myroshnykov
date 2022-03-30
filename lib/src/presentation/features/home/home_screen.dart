@@ -24,6 +24,7 @@ class HomeScreen extends CubitWidget<HomeState, HomeCubit> {
   Widget buildWidget(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const BottomNavigationBarWidget(currentTabIndex: 0),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: _buildBody(context),
       ),

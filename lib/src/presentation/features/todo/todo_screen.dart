@@ -9,7 +9,6 @@ import 'package:todo_app_myroshnykov/src/presentation/dialogs/two_action_dialog.
 import 'package:todo_app_myroshnykov/src/presentation/features/todo/todo_cubit.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/all_todo_screen_state_params.dart';
 import 'package:todo_app_myroshnykov/src/presentation/utils/beamer_state_utils.dart';
-import 'package:todo_app_myroshnykov/src/presentation/utils/num_to_month.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/icon_button_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/outlined_input_widget.dart';
 import 'package:todo_app_myroshnykov/src/presentation/widgets/snack_bar.dart';
@@ -93,13 +92,25 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
   Widget buildWidget(BuildContext context) {
     return observeState(
       builder: (context, state) => Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           centerTitle: true,
           title: state.todoInfoUpdating
-              ? Text(LocaleKeys.update_todo.tr().toUpperCase())
-              : Text(LocaleKeys.add_todo.tr().toUpperCase()),
+              ? Text(
+                  LocaleKeys.update_todo.tr().toUpperCase(),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.background,
+                  ),
+                )
+              : Text(
+                  LocaleKeys.add_todo.tr().toUpperCase(),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.background,
+                  ),
+                ),
           leading: BackButton(
             onPressed: () => _navigateBack(),
+            color: Theme.of(context).colorScheme.background,
           ),
         ),
         body: SingleChildScrollView(
@@ -220,9 +231,13 @@ class _TodoScreenState extends CubitState<TodoScreen, TodoState, TodoCubit> {
       children: [
         Text(
           DateFormat.yMMMd().format(state.dateTime),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
         const SizedBox(height: 10),
-        Text(DateFormat.Hm().format(state.dateTime)),
+        Text(
+          DateFormat.Hm().format(state.dateTime),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
       ],
     );
   }

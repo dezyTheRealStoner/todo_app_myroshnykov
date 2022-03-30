@@ -55,6 +55,7 @@ class _OutlinedInputWidgetState extends State<OutlinedInputWidget> {
         minLines: 1,
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(
           errorText: widget.errorText,
           errorMaxLines: 3,

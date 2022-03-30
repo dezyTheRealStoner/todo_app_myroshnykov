@@ -45,7 +45,7 @@ class SubmitButtonWidget extends StatelessWidget {
               : Text(
                   title,
                   style: theme.textTheme.subtitle1?.copyWith(
-                    color: theme.colorScheme.onPrimary,
+                    color: theme.colorScheme.background,
                   ),
                 ),
         ),

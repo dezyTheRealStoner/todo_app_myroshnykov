@@ -18,6 +18,15 @@ class TodoAppMyroshnykov
   }
 
   @override
+  void onStateChanged(BuildContext context, AppPreferencesState state) {
+    if (state.user.language == UserLanguage.en) {
+      context.setLocale(const Locale('en'));
+    } else if (state.user.language == UserLanguage.uk) {
+      context.setLocale(const Locale('uk'));
+    }
+  }
+
+  @override
   Widget buildWidget(BuildContext context) {
     return observeState(
       builder: (context, state) => MaterialApp.router(

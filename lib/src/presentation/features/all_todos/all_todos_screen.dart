@@ -119,6 +119,7 @@ class _AllTodosScreenState
   @override
   Widget buildWidget(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       bottomNavigationBar: const BottomNavigationBarWidget(currentTabIndex: 1),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -282,21 +283,40 @@ class _AllTodosScreenState
       onDaySelected: (DateTime selectDay, DateTime focusDay) {
         cubit(context).onDateSelected(selectDay);
       },
-      headerStyle: const HeaderStyle(
+      headerStyle: HeaderStyle(
         titleCentered: true,
         formatButtonVisible: false,
-      ),
-      daysOfWeekStyle: const DaysOfWeekStyle(
-        weekdayStyle: TextStyle(color: Colors.white70),
-        weekendStyle: TextStyle(color: Colors.white70),
+        leftChevronIcon: Icon(
+          Icons.chevron_left,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        rightChevronIcon: Icon(
+          Icons.chevron_right,
+          color: Theme.of(context).colorScheme.primary,
+        ),
       ),
       calendarBuilders: CalendarBuilders(
+        headerTitleBuilder: (context, date) {
+          return Center(
+            child: Text(
+              DateFormat.yMMM().format(date),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        },
         defaultBuilder: (context, date, _) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(date.day.toString()),
+                Text(
+                  date.day.toString(),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
                 const SizedBox(height: 5),
                 hasDateTodo(date: date, state: state)
                     ? _dateHasTodoDot()
@@ -363,7 +383,7 @@ class _AllTodosScreenState
                 Text(
                   date.day.toString(),
                   style:
-                      TextStyle(color: Theme.of(context).colorScheme.surface),
+                      TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
                 const SizedBox(height: 15),
               ],
@@ -378,9 +398,9 @@ class _AllTodosScreenState
     return Container(
       width: 10,
       height: 10,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }
@@ -398,7 +418,7 @@ class _AllTodosScreenState
         height: 5,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).colorScheme.error,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );
@@ -417,6 +437,7 @@ class _AllTodosScreenState
           DateFormat.yMMMd().format(
             state.dateWasSelected ? state.selectedDay : state.startDateTime,
           ),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
         AnimatedCrossFade(
           crossFadeState: todoList.isEmpty
@@ -440,12 +461,18 @@ class _AllTodosScreenState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                      onTap: () => _navigateToTodoScreen(
-                            context: context,
-                            todoList: todoList,
-                            index: index,
-                          ),
-                      child: Text(todoList.elementAt(index).title)),
+                    onTap: () => _navigateToTodoScreen(
+                      context: context,
+                      todoList: todoList,
+                      index: index,
+                    ),
+                    child: Text(
+                      todoList.elementAt(index).title,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () => _navigateToTodoScreen(
                       context: context,
@@ -455,6 +482,9 @@ class _AllTodosScreenState
                     child: Text(
                       DateFormat.Hm()
                           .format(todoList.elementAt(index).dateTime),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ],
