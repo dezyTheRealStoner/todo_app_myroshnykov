@@ -1,9 +1,11 @@
 # todo_app_myroshnykov
 
 Run code generation:
+
 ```flutter packages pub run build_runner build --delete-conflicting-outputs```
 
 Run localization keys generator:
+
 ```flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/translations -O lib/src/presentation/base/localization```
 
 ![Screenshot_1648564941](https://user-images.githubusercontent.com/91151402/160638311-622d0d1d-6037-4bdf-bc88-edebf5cebbb5.png)
